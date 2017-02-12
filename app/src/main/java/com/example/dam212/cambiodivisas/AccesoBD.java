@@ -21,8 +21,8 @@ public class AccesoBD extends SQLiteOpenHelper{
             "valor DOUBLE NOT NULL" +
             ");";
 
-    public AccesoBD(Context context, String name, SQLiteDatabase.CursorFactory factory, int version) {
-        super(context, name, factory, version);
+    public AccesoBD(Context context) {
+        super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
 
     @Override

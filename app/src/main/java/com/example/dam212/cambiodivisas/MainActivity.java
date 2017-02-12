@@ -3,6 +3,8 @@ package com.example.dam212.cambiodivisas;
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Context;
+import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteOpenHelper;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
@@ -58,6 +60,8 @@ public class MainActivity extends Activity {
     private ArrayAdapter spinner_adapter;
     private AsynConversionSOAP conversionSOAP;
     private AsynConversionREST conversionREST;
+    private static SQLiteDatabase db;
+    private AccesoBD abd;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,6 +77,11 @@ public class MainActivity extends Activity {
         spinner_adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spMoneda1.setAdapter(spinner_adapter);
         spMoneda2.setAdapter(spinner_adapter);
+
+        abd = new AccesoBD(this);
+        db = abd.getWritableDatabase();
+
+        introducirDivisasBD();
     }
 
     private class AsynConversionSOAP extends AsyncTask<String, Void, Void> {
@@ -209,7 +218,6 @@ public class MainActivity extends Activity {
     }
 
     public void convertirDivisaREST(View v){
-
         if(networkHabilitada()){
             moneda1 = spMoneda1.getSelectedItem().toString();
             moneda2 = spMoneda2.getSelectedItem().toString();
@@ -219,5 +227,47 @@ public class MainActivity extends Activity {
         else{
             Toast.makeText(getApplicationContext(), "No hay conexion a internet", Toast.LENGTH_LONG).show();
         }
+    }
+
+    public void introducirDivisasBD(){
+        ConversionMoneda cmEE = new ConversionMoneda("EUR", "EUR", 1);
+        ConversionMoneda cmEU = new ConversionMoneda("EUR", "USD", 1.06);
+        ConversionMoneda cmEG = new ConversionMoneda("EUR", "GBP", 0.85);
+        ConversionMoneda cmEM = new ConversionMoneda("EUR", "MXN", 21.62);
+
+        ConversionMoneda cmUU = new ConversionMoneda("USD", "USD", 1);
+        ConversionMoneda cmUE = new ConversionMoneda("USD", "EUR", 0.94);
+        ConversionMoneda cmUG = new ConversionMoneda("USD", "GBP", 0.80);
+        ConversionMoneda cmUM = new ConversionMoneda("USD", "MXN", 20.33);
+
+        ConversionMoneda cmGE = new ConversionMoneda("GBP","EUR",1.17);
+        ConversionMoneda cmGU = new ConversionMoneda("GBP","USD",1.24);
+        ConversionMoneda cmGG = new ConversionMoneda("GBP","GBP", 1);
+        ConversionMoneda cmGM = new ConversionMoneda("GBP","MXN", 25.37);
+
+        ConversionMoneda cmME = new ConversionMoneda("MXN","EUR", 0.0462);
+        ConversionMoneda cmMU = new ConversionMoneda("MXN","USD", 0.049);
+        ConversionMoneda cmMG = new ConversionMoneda("MXN","GBP",0.039);
+        ConversionMoneda cmMM = new ConversionMoneda("MXN","MXN", 1);
+
+        abd.insert(db, cmEE);
+        abd.insert(db, cmEU);
+        abd.insert(db, cmEG);
+        abd.insert(db, cmEM);
+
+        abd.insert(db, cmUU);
+        abd.insert(db, cmUE);
+        abd.insert(db, cmUG);
+        abd.insert(db, cmUM);
+
+        abd.insert(db, cmGE);
+        abd.insert(db, cmGU);
+        abd.insert(db, cmGG);
+        abd.insert(db, cmGM);
+
+        abd.insert(db, cmME);
+        abd.insert(db, cmMU);
+        abd.insert(db, cmMG);
+        abd.insert(db, cmMM);
     }
 }
