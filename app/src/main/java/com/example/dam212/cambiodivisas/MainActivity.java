@@ -55,7 +55,8 @@ public class MainActivity extends Activity {
     private EditText edCantidad ;
     private Button btnConvertir;
     private ArrayAdapter spinner_adapter;
-    private AsynConversiones task;
+    private AsynConversionSOAP conversionSOAP;
+    private AsynConversionREST conversionREST;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,11 +75,11 @@ public class MainActivity extends Activity {
         spMoneda2.setAdapter(spinner_adapter);
     }
 
-    private class AsynConversiones extends AsyncTask<String, Void, Void> {
+    private class AsynConversionSOAP extends AsyncTask<String, Void, Void> {
         @Override
         protected Void doInBackground(String... params) {
             Log.i(TAG, "doInBackground");
-            getConversionREST(moneda1, moneda2);
+            getConversionSOAP(moneda1, moneda2);
             return null;
         }
 
@@ -100,7 +101,7 @@ public class MainActivity extends Activity {
             Log.i(TAG, "onProgressUpdate");
         }
 
-        public void getConversion(String moneda1, String moneda2) {
+        public void getConversionSOAP(String moneda1, String moneda2) {
             //Create request
             SoapObject request = new SoapObject(NAMESPACE, METHOD_NAME);
 
@@ -126,6 +127,34 @@ public class MainActivity extends Activity {
                 e.printStackTrace();
             }
         }
+    }
+
+    private class AsynConversionREST extends AsyncTask<String, Void, Void> {
+        @Override
+        protected Void doInBackground(String... params) {
+            Log.i(TAG, "doInBackground");
+            getConversionREST(moneda1, moneda2);
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void result) {
+            Log.i(TAG, "onPostExecute");
+            //tvSolucion.setText(String.valueOf(Double.parseDouble(respuesta) * Double.parseDouble(edCantidad.getText().toString())));
+            //Log.i(TAG, respuesta);
+        }
+
+        @Override
+        protected void onPreExecute() {
+            Log.i(TAG, "onPreExecute");
+            //tv.setText("Calculating...");
+        }
+
+        @Override
+        protected void onProgressUpdate(Void... values) {
+            Log.i(TAG, "onProgressUpdate");
+        }
+
         public void getConversionREST(String moneda1, String moneda2) {
             try{
                 URL url = new URL("http://www.webservicex.net/CurrencyConvertor.asmx/ConversionRate?FromCurrency=EUR&ToCurrency=EUR");
@@ -152,9 +181,7 @@ public class MainActivity extends Activity {
                 e.printStackTrace();
             }
         }
-
     }
-
     public boolean networkHabilitada(){
         ConnectivityManager connectivityManager = (ConnectivityManager)
                 getSystemService(Context.CONNECTIVITY_SERVICE);
@@ -164,13 +191,26 @@ public class MainActivity extends Activity {
         return (actNetInfo != null && actNetInfo.isConnected());
     }
 
-    public void convertirDivisa(View v){
+    public void convertirDivisaSOAP(View v){
 
         if(networkHabilitada()){
             moneda1 = spMoneda1.getSelectedItem().toString();
             moneda2 = spMoneda2.getSelectedItem().toString();
-            task = new AsynConversiones();
-            task.execute();
+            conversionSOAP = new AsynConversionSOAP();
+            conversionSOAP.execute();
+        }
+        else{
+            Toast.makeText(getApplicationContext(), "No hay conexion a internet", Toast.LENGTH_LONG).show();
+        }
+    }
+
+    public void convertirDivisaREST(View v){
+
+        if(networkHabilitada()){
+            moneda1 = spMoneda1.getSelectedItem().toString();
+            moneda2 = spMoneda2.getSelectedItem().toString();
+            conversionREST = new AsynConversionREST();
+            conversionREST.execute();
         }
         else{
             Toast.makeText(getApplicationContext(), "No hay conexion a internet", Toast.LENGTH_LONG).show();
