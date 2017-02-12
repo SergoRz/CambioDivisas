@@ -22,6 +22,9 @@ import org.ksoap2.serialization.SoapObject;
 import org.ksoap2.serialization.SoapPrimitive;
 import org.ksoap2.serialization.SoapSerializationEnvelope;
 import org.ksoap2.transport.HttpTransportSE;
+import org.xmlpull.v1.XmlPullParser;
+import org.xmlpull.v1.XmlPullParserException;
+import org.xmlpull.v1.XmlPullParserFactory;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -86,7 +89,7 @@ public class MainActivity extends Activity {
         @Override
         protected void onPostExecute(Void result) {
             Log.i(TAG, "onPostExecute");
-            //tvSolucion.setText(String.valueOf(Double.parseDouble(respuesta) * Double.parseDouble(edCantidad.getText().toString())));
+            tvSolucion.setText(String.valueOf(Double.parseDouble(respuesta) * Double.parseDouble(edCantidad.getText().toString())));
             //Log.i(TAG, respuesta);
         }
 
@@ -140,7 +143,7 @@ public class MainActivity extends Activity {
         @Override
         protected void onPostExecute(Void result) {
             Log.i(TAG, "onPostExecute");
-            //tvSolucion.setText(String.valueOf(Double.parseDouble(respuesta) * Double.parseDouble(edCantidad.getText().toString())));
+            tvSolucion.setText(String.valueOf(Double.parseDouble(respuesta) * Double.parseDouble(edCantidad.getText().toString())));
             //Log.i(TAG, respuesta);
         }
 
@@ -157,7 +160,7 @@ public class MainActivity extends Activity {
 
         public void getConversionREST(String moneda1, String moneda2) {
             try{
-                URL url = new URL("http://www.webservicex.net/CurrencyConvertor.asmx/ConversionRate?FromCurrency=EUR&ToCurrency=EUR");
+                URL url = new URL("http://www.webservicex.net/CurrencyConvertor.asmx/ConversionRate?FromCurrency=" + moneda1 + "&ToCurrency=" + moneda2);
                 HttpURLConnection conn = (HttpURLConnection) url.openConnection();
                 conn.setRequestMethod("GET");
                 conn.setRequestProperty("Accept", "application/json");
@@ -166,18 +169,24 @@ public class MainActivity extends Activity {
                     throw new RuntimeException("Error : codigo de error HTTP  : " + conn.getResponseCode());
                 }
 
-                BufferedReader br = new BufferedReader(new InputStreamReader((conn.getInputStream())));
+                XmlPullParserFactory xpf =  XmlPullParserFactory.newInstance();
+                xpf.setNamespaceAware(true);
 
-                String output;
-                Log.i(TAG, "Datos de salida del servidor \n");
-                while ((output = br.readLine()) != null) {
-                    Log.i(TAG, output);
-                }
+                XmlPullParser xp = xpf.newPullParser();
+
+                BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+                xp.setInput(br);
+                xp.nextTag();
+                xp.next();
+
+                respuesta = xp.getText();
 
                 conn.disconnect();
             } catch (MalformedURLException e) {
                 e.printStackTrace();
             } catch (IOException e) {
+                e.printStackTrace();
+            } catch (XmlPullParserException e) {
                 e.printStackTrace();
             }
         }
