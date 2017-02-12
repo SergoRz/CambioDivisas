@@ -2,10 +2,19 @@ package com.example.dam212.cambiodivisas;
 
 import android.annotation.TargetApi;
 import android.app.Activity;
+import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.Spinner;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import org.ksoap2.SoapEnvelope;
 import org.ksoap2.serialization.PropertyInfo;
@@ -36,9 +45,17 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        AsynConversiones task = new AsynConversiones();
+        EditText edCantidad = (EditText) findViewById(R.id.edCantidad);
+        Spinner spMoneda1 = (Spinner) findViewById(R.id.spMoneda1);
+        Spinner spMoneda2 = (Spinner) findViewById(R.id.spMoneda2);
+        TextView tvSolucion = (TextView) findViewById(R.id.tvCantidad);
+        Button btnConvertir = (Button) findViewById(R.id.btnConvertir);
+
+
+
+        //AsynConversiones task = new AsynConversiones();
         //Call execute
-        task.execute();
+        //task.execute();
 
     }
 
@@ -101,5 +118,48 @@ public class MainActivity extends Activity {
             }
         }
 
+    }
+
+    public boolean networkHabilitada(){
+        ConnectivityManager connectivityManager = (ConnectivityManager)
+                getSystemService(Context.CONNECTIVITY_SERVICE);
+
+        NetworkInfo actNetInfo = connectivityManager.getActiveNetworkInfo();
+
+        return (actNetInfo != null && actNetInfo.isConnected());
+    }
+
+    public Boolean accesoInternet() {
+
+        try {
+            Process p = java.lang.Runtime.getRuntime().exec("ping -c 1 www.google.es");
+
+            int val           = p.waitFor();
+            boolean reachable = (val == 0);
+            return reachable;
+
+        } catch (Exception e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    public double convertirDivisa(View v){
+        double cantidad = 0;
+
+        if(networkHabilitada()){
+            if(accesoInternet()){
+
+            }
+            else{
+                Toast.makeText(getApplicationContext(), "No tienes conexion a Internet", Toast.LENGTH_LONG).show();
+            }
+        }
+        else{
+            Toast.makeText(getApplicationContext(), "No tienes Internet habilitado", Toast.LENGTH_LONG).show();
+        }
+
+        return cantidad;
     }
 }

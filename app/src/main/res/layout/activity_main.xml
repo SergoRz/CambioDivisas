@@ -81,12 +81,12 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:gravity="center"
-                android:id="@+id/spMoneda2">
+                >
 
                 <Spinner
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:id="@+id/spinner4" />
+                    android:id="@+id/spMoneda2" />
             </LinearLayout>
 
         </LinearLayout>
@@ -114,6 +114,20 @@
                 android:textStyle="normal|bold"
                 android:id="@+id/tvSolucion" />
 
+        </LinearLayout>
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <Button
+                android:text="Convertir"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/btnConvertir"
+                android:layout_weight="1"
+                android:onClick="convertirDivisa"/>
         </LinearLayout>
     </LinearLayout>
 
