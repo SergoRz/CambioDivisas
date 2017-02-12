@@ -27,9 +27,7 @@ public class AccesoBD extends SQLiteOpenHelper{
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-
         db.execSQL(sqlCreate);
-
     }
 
     @Override
