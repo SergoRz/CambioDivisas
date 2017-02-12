@@ -22,6 +22,8 @@ import org.ksoap2.serialization.SoapPrimitive;
 import org.ksoap2.serialization.SoapSerializationEnvelope;
 import org.ksoap2.transport.HttpTransportSE;
 
+import java.net.HttpURLConnection;
+
 /*
 Monedas:
 - Dolar Estadounidense
@@ -123,8 +125,7 @@ public class MainActivity extends Activity {
 
 
     public void getConversionREST(String moneda1, String moneda2){
-
-
+        HttpURLConnection httpConnection =
         HttpClient httpClient = new DefaultHttpClient();
 
         String id = txtId.getText().toString();
