@@ -62,7 +62,6 @@ public class AccesoBD extends SQLiteOpenHelper{
                 valor = c.getDouble(0);
             } while(c.moveToNext());
         }
-
         return valor;
     }
 
