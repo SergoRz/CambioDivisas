@@ -16,11 +16,11 @@ public class AccesoBD extends SQLiteOpenHelper{
     //Nombre del archivo con extensión .db
 
     //Sentencia SQL que crea la tabla
-    String sqlCreate = "CREATE IF NOT EXIST TABLE divisas(" +
-            "moneda1 VARCHAR(3) PRIMARY KEY NOT NULL," +
-            "moneda2 VARCHAR(3) PRIMARY KEY NOT NULL," +
-            "valor DOUBLE NOT NULL" +
-            ");";
+    String sqlCreate = "CREATE TABLE IF NOT EXISTS divisas(" +
+            "moneda1 VARCHAR(3) NOT NULL," +
+            "moneda2 VARCHAR(3) NOT NULL," +
+            "valor DOUBLE NOT NULL," +
+            " PRIMARY KEY(moneda1, moneda2));";
 
     public AccesoBD(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -32,7 +32,9 @@ public class AccesoBD extends SQLiteOpenHelper{
 
         try{
             introducirDivisasBD(db);
-        }catch(SQLiteException e){}
+        }catch(SQLiteException e){
+            e.printStackTrace();
+        }
     }
 
     @Override
