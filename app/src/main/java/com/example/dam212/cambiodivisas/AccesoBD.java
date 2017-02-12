@@ -15,7 +15,7 @@ public class AccesoBD extends SQLiteOpenHelper{
     //Nombre del archivo con extensión .db
 
     //Sentencia SQL que crea la tabla
-    String sqlCreate = "CREATE TABLE divisas(" +
+    String sqlCreate = "CREATE IF NOT EXIST TABLE divisas(" +
             "moneda1 VARCHAR(3) PRIMARY KEY NOT NULL," +
             "moneda2 VARCHAR(3) PRIMARY KEY NOT NULL," +
             "valor DOUBLE NOT NULL" +
@@ -31,9 +31,7 @@ public class AccesoBD extends SQLiteOpenHelper{
     }
 
     @Override
-    public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-
-    }
+    public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {}
 
     public void insert(SQLiteDatabase db, ConversionMoneda cm){
         String sqlInsert = "INSERT INTO divisas VALUES("
@@ -47,7 +45,7 @@ public class AccesoBD extends SQLiteOpenHelper{
 
     public double obtenerValor(SQLiteDatabase db, ConversionMoneda cm){
         String[] args = new String[] {cm.getMoneda1(), cm.getMoneda2()};
-        Cursor c = db.rawQuery(" SELECT valor FROM divisas WHERE moneda1=? and moneda2=?", args);
+        Cursor c = db.rawQuery("SELECT valor FROM divisas WHERE moneda1=? and moneda2=?", args);
         double valor = c.getDouble(0);
 
         return valor;
