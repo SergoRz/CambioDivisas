@@ -34,7 +34,13 @@ public class AccesoBD extends SQLiteOpenHelper{
 
     }
 
-    public void insert(){
+    public void insert(SQLiteDatabase db, ConversionMoneda cm){
+        String sqlInsert = "INSERT INTO divisas VALUES("
+                + cm.getMoneda1() + "," +
+                + cm.getMoneda2() + "," +
+                + cm.getValor() +
+                "')";
 
+        db.execSQL(sqlInsert);//Se ejecuta la sentencia creada anteriormente
     }
 }
