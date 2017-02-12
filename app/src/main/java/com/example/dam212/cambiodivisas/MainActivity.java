@@ -15,14 +15,20 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
-import org.json.JSONObject;
+import android.widget.Toast;
+
 import org.ksoap2.SoapEnvelope;
 import org.ksoap2.serialization.SoapObject;
 import org.ksoap2.serialization.SoapPrimitive;
 import org.ksoap2.serialization.SoapSerializationEnvelope;
 import org.ksoap2.transport.HttpTransportSE;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
 
 /*
 Monedas:
@@ -36,7 +42,7 @@ Monedas:
 public class MainActivity extends Activity {
 
     private final String NAMESPACE = "http://www.webserviceX.NET/";
-    private final String URL = "http://www.webservicex.net/CurrencyConvertor.asmx";
+    private final String URLSOAP = "http://www.webservicex.net/CurrencyConvertor.asmx";
     private final String SOAP_ACTION = "http://www.webserviceX.NET/ConversionRate";
     private final String METHOD_NAME = "ConversionRate";
     private String TAG = "Accion";
@@ -72,15 +78,15 @@ public class MainActivity extends Activity {
         @Override
         protected Void doInBackground(String... params) {
             Log.i(TAG, "doInBackground");
-            getConversion(moneda1, moneda2);
+            getConversionREST(moneda1, moneda2);
             return null;
         }
 
         @Override
         protected void onPostExecute(Void result) {
             Log.i(TAG, "onPostExecute");
-            tvSolucion.setText(String.valueOf(Double.parseDouble(respuesta) * Double.parseDouble(edCantidad.getText().toString())));
-            Log.i(TAG, respuesta);
+            //tvSolucion.setText(String.valueOf(Double.parseDouble(respuesta) * Double.parseDouble(edCantidad.getText().toString())));
+            //Log.i(TAG, respuesta);
         }
 
         @Override
@@ -106,7 +112,7 @@ public class MainActivity extends Activity {
             //Set output SOAP object
             envelope.setOutputSoapObject(request);
             //Create HTTP call object
-            HttpTransportSE androidHttpTransport = new HttpTransportSE(URL);
+            HttpTransportSE androidHttpTransport = new HttpTransportSE(URLSOAP);
 
             try {
                 //Invole web service
@@ -120,38 +126,35 @@ public class MainActivity extends Activity {
                 e.printStackTrace();
             }
         }
+        public void getConversionREST(String moneda1, String moneda2) {
+            try{
+                URL url = new URL("http://www.webservicex.net/CurrencyConvertor.asmx/ConversionRate?FromCurrency=EUR&ToCurrency=EUR");
+                HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+                conn.setRequestMethod("GET");
+                conn.setRequestProperty("Accept", "application/json");
+
+                if (conn.getResponseCode() != 200) {
+                    throw new RuntimeException("Failed : HTTP error code : " + conn.getResponseCode());
+                }
+
+                BufferedReader br = new BufferedReader(new InputStreamReader((conn.getInputStream())));
+
+                String output;
+                Log.i(TAG, "Output from Server .... \n");
+                while ((output = br.readLine()) != null) {
+                    Log.i(TAG, output);
+                }
+
+                conn.disconnect();
+            } catch (MalformedURLException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
 
     }
 
-
-    public void getConversionREST(String moneda1, String moneda2){
-        HttpURLConnection httpConnection =
-        HttpClient httpClient = new DefaultHttpClient();
-
-        String id = txtId.getText().toString();
-
-        HttpGet del = new HttpGet("http://www.webservicex.net/CurrencyConvertor.asmx/ConversionRate?FromCurrency=EUR&ToCurrency=EUR");
-
-        del.setHeader("content-type", "application/json");
-
-        try
-        {
-            HttpResponse resp = httpClient.execute(del);
-            String respStr = EntityUtils.toString(resp.getEntity());
-
-            JSONObject respJSON = new JSONObject(respStr);
-
-            int idCli = respJSON.getInt("Id");
-            String nombCli = respJSON.getString("Nombre");
-            int telefCli = respJSON.getInt("Telefono");
-
-            lblResultado.setText("" + idCli + "-" + nombCli + "-" + telefCli);
-        }
-        catch(Exception ex)
-        {
-            Log.e("ServicioRest","Error!", ex);
-        }
-    }
     public boolean networkHabilitada(){
         ConnectivityManager connectivityManager = (ConnectivityManager)
                 getSystemService(Context.CONNECTIVITY_SERVICE);
@@ -161,41 +164,16 @@ public class MainActivity extends Activity {
         return (actNetInfo != null && actNetInfo.isConnected());
     }
 
-    public Boolean accesoInternet() {
-
-        try {
-            Process p = java.lang.Runtime.getRuntime().exec("ping -c 1 www.google.es");
-
-            int val = p.waitFor();
-            boolean reachable = (val == 0);
-            return reachable;
-
-        } catch (Exception e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-        return false;
-    }
-
     public void convertirDivisa(View v){
 
-        moneda1 = spMoneda1.getSelectedItem().toString();
-        Log.i(TAG, moneda1);
-        moneda2 = spMoneda2.getSelectedItem().toString();
-        Log.i(TAG, moneda2);
-        task = new AsynConversiones();
-        task.execute();
-        /*
         if(networkHabilitada()){
-            if(accesoInternet()){
-
-            }
-            else{
-                Toast.makeText(getApplicationContext(), "No tienes conexión a Internet", Toast.LENGTH_LONG).show();
-            }
+            moneda1 = spMoneda1.getSelectedItem().toString();
+            moneda2 = spMoneda2.getSelectedItem().toString();
+            task = new AsynConversiones();
+            task.execute();
         }
         else{
-            Toast.makeText(getApplicationContext(), "No tienes Internet habilitado", Toast.LENGTH_LONG).show();
-        }*/
+            Toast.makeText(getApplicationContext(), "No hay conexion a internet", Toast.LENGTH_LONG).show();
+        }
     }
 }
