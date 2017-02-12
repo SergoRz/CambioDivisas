@@ -14,7 +14,6 @@ public class AccesoBD extends SQLiteOpenHelper{
     public static final int DATABASE_VERSION = 1;//Contexto de acción para el helper.
     public static final String DATABASE_NAME = "divisasDB.db";
     //Nombre del archivo con extensión .db
-
     //Sentencia SQL que crea la tabla
     String sqlCreate = "CREATE TABLE IF NOT EXISTS divisas(" +
             "moneda1 VARCHAR(3) NOT NULL," +
