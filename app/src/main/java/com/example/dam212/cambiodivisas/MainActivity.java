@@ -9,7 +9,6 @@ import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
-import android.widget.TextView;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -18,7 +17,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import org.ksoap2.SoapEnvelope;
-import org.ksoap2.serialization.PropertyInfo;
 import org.ksoap2.serialization.SoapObject;
 import org.ksoap2.serialization.SoapPrimitive;
 import org.ksoap2.serialization.SoapSerializationEnvelope;
@@ -33,15 +31,15 @@ Peso Mexicano*/
 @TargetApi(Build.VERSION_CODES.CUPCAKE)
 public class MainActivity extends Activity {
 
-    private final String NAMESPACE = "http://www.webservicex.net/";
+    private final String NAMESPACE = "http://www.webserviceX.NET/";
     private final String URL = "http://www.webservicex.net/CurrencyConvertor.asmx";
-    private final String SOAP_ACTION = "http://www.webservicex.net/CurrencyConvertor.asmx/ConversionRate";
+    private final String SOAP_ACTION = "http://www.webserviceX.NET/ConversionRate";
     private final String METHOD_NAME = "ConversionRate";
     private String TAG = "Accion";
     private static String moneda1 = "EUR";
     private static String moneda2 = "USD";
     private static String respuesta;
-    TextView tvSolucion;
+    private TextView tvSolucion;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -50,14 +48,12 @@ public class MainActivity extends Activity {
         EditText edCantidad = (EditText) findViewById(R.id.edCantidad);
         Spinner spMoneda1 = (Spinner) findViewById(R.id.spMoneda1);
         Spinner spMoneda2 = (Spinner) findViewById(R.id.spMoneda2);
-        TextView tvSolucion = (TextView) findViewById(R.id.tvCantidad);
         Button btnConvertir = (Button) findViewById(R.id.btnConvertir);
         tvSolucion = (TextView) findViewById(R.id.tvSolucion);
 
-
-        //AsynConversiones task = new AsynConversiones();
+        AsynConversiones task = new AsynConversiones();
         //Call execute
-        //task.execute();
+        task.execute();
 
     }
 
