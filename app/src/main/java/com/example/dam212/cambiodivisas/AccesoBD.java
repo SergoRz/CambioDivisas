@@ -41,27 +41,26 @@ public class AccesoBD extends SQLiteOpenHelper{
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {}
 
     public void insert(SQLiteDatabase db, ConversionMoneda cm){
-        String sqlInsert = "INSERT INTO divisas VALUES("
-                + cm.getMoneda1() + ","
-                + cm.getMoneda2() + ","
+        String sqlInsert = "INSERT INTO divisas VALUES('"
+                + cm.getMoneda1() + "','"
+                + cm.getMoneda2() + "',"
                 + cm.getValor() +
-                "')";
+                ")";
 
         db.execSQL(sqlInsert);//Se ejecuta la sentencia creada anteriormente
     }
 
     public double obtenerValor(SQLiteDatabase db, ConversionMoneda cm){
         double valor = 0;
-
-        String[] selectionArgs = new String[] {cm.getMoneda1(), cm.getMoneda2()};
-        String columns[] = new String[]{"valor"};
-
-        String query = "select valor from divisas WHERE moneda1=? and moneda2=?";
-        Cursor c  = db.rawQuery(query, selectionArgs);
+        String[] campos = new String[] {"valor"};
+        Cursor c = db.query("divisas", campos, "moneda1 ='" + cm.getMoneda1() + "' AND moneda2 ='" + cm.getMoneda2() + "'", null, null, null, null);
 
         //Nos aseguramos de que existe al menos un registro
         if (c.moveToFirst()) {
-            valor = c.getDouble(0);
+            //Recorremos el cursor hasta que no haya más registros
+            do {
+                valor = c.getDouble(0);
+            } while(c.moveToNext());
         }
 
         return valor;
