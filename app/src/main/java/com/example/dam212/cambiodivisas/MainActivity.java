@@ -223,17 +223,16 @@ public class MainActivity extends Activity {
         moneda2 = spMoneda2.getSelectedItem().toString();
 
         if(networkHabilitada()){
-            //Toast.makeText(getApplicationContext(), "No hay conexion a internet, valor obtenido de la base de datos", Toast.LENGTH_LONG).show();
-            ConversionMoneda cm = new ConversionMoneda(moneda1, moneda2);
-            Log.d(TAG, moneda1 + " " + moneda2);
-            double valor = abd.obtenerValor(db, cm);
-            Log.d("Valor:", String.valueOf(valor));
-            double resultado = valor*Double.parseDouble(edCantidad.getText().toString());
-            tvSolucion.setText(String.valueOf(resultado));
-        }
-        else{
             conversionREST = new AsynConversionREST();
             conversionREST.execute();
+
+        }
+        else{
+            Toast.makeText(getApplicationContext(), "No hay conexion a internet, valor obtenido de la base de datos", Toast.LENGTH_LONG).show();
+            ConversionMoneda cm = new ConversionMoneda(moneda1, moneda2);
+            double valor = abd.obtenerValor(db, cm);
+            double resultado = valor*Double.parseDouble(edCantidad.getText().toString());
+            tvSolucion.setText(String.valueOf(resultado));
         }
     }
 
