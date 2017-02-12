@@ -1,6 +1,7 @@
 package com.example.dam212.cambiodivisas;
 
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
@@ -15,8 +16,8 @@ public class AccesoBD extends SQLiteOpenHelper{
 
     //Sentencia SQL que crea la tabla
     String sqlCreate = "CREATE TABLE divisas(" +
-            "moneda1 DOUBLE PRIMARY KEY NOT NULL," +
-            "moneda2 DOUBLE PRIMARY KEY NOT NULL," +
+            "moneda1 VARCHAR(3) PRIMARY KEY NOT NULL," +
+            "moneda2 VARCHAR(3) PRIMARY KEY NOT NULL," +
             "valor DOUBLE NOT NULL" +
             ");";
 
@@ -36,11 +37,19 @@ public class AccesoBD extends SQLiteOpenHelper{
 
     public void insert(SQLiteDatabase db, ConversionMoneda cm){
         String sqlInsert = "INSERT INTO divisas VALUES("
-                + cm.getMoneda1() + "," +
-                + cm.getMoneda2() + "," +
+                + cm.getMoneda1() + ","
+                + cm.getMoneda2() + ","
                 + cm.getValor() +
                 "')";
 
         db.execSQL(sqlInsert);//Se ejecuta la sentencia creada anteriormente
+    }
+
+    public double obtenerValor(SQLiteDatabase db, ConversionMoneda cm){
+        String[] args = new String[] {cm.getMoneda1(), cm.getMoneda2()};
+        Cursor c = db.rawQuery(" SELECT valor FROM divisas WHERE moneda1=? and moneda2=?", args);
+        double valor = c.getDouble(0);
+
+        return valor;
     }
 }

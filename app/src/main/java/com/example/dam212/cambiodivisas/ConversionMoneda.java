@@ -6,15 +6,16 @@ package com.example.dam212.cambiodivisas;
 
 public class ConversionMoneda {
 
-    private double moneda1, moneda2, valor;
+    private double valor;
+    private String moneda1, moneda2;
 
-    public ConversionMoneda(double moneda1, double moneda2, double valor){
+    public ConversionMoneda(String moneda1, String moneda2, double valor){
         this.moneda1 = moneda1;
         this.moneda2 = moneda2;
         this.valor = valor;
     }
 
-    public double getMoneda1() {
+    public String getMoneda1() {
         return moneda1;
     }
 
@@ -22,15 +23,15 @@ public class ConversionMoneda {
         return valor;
     }
 
-    public double getMoneda2() {
+    public String getMoneda2() {
         return moneda2;
     }
 
-    public void setMoneda1(double moneda1) {
+    public void setMoneda1(String moneda1) {
         this.moneda1 = moneda1;
     }
 
-    public void setMoneda2(double moneda2) {
+    public void setMoneda2(String moneda2) {
         this.moneda2 = moneda2;
     }
 
