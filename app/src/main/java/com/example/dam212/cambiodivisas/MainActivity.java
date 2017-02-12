@@ -10,11 +10,11 @@ import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import org.ksoap2.SoapEnvelope;
 import org.ksoap2.serialization.SoapObject;
@@ -22,11 +22,13 @@ import org.ksoap2.serialization.SoapPrimitive;
 import org.ksoap2.serialization.SoapSerializationEnvelope;
 import org.ksoap2.transport.HttpTransportSE;
 
-/*Dolar Estadounidense
-Euro
-Libra esterlina
-Yen Japones
-Peso Mexicano*/
+/*
+Monedas:
+- Dolar Estadounidense
+- Euro
+- Libra esterlina
+- Yen Japones
+- Peso Mexicano*/
 
 @TargetApi(Build.VERSION_CODES.CUPCAKE)
 public class MainActivity extends Activity {
@@ -36,25 +38,32 @@ public class MainActivity extends Activity {
     private final String SOAP_ACTION = "http://www.webserviceX.NET/ConversionRate";
     private final String METHOD_NAME = "ConversionRate";
     private String TAG = "Accion";
-    private static String moneda1 = "EUR";
-    private static String moneda2 = "USD";
+    private static String moneda1;
+    private static String moneda2;
     private static String respuesta;
     private TextView tvSolucion;
+    private Spinner spMoneda1;
+    private Spinner spMoneda2;
+    private EditText edCantidad ;
+    private Button btnConvertir;
+    private ArrayAdapter spinner_adapter;
+    private AsynConversiones task;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        EditText edCantidad = (EditText) findViewById(R.id.edCantidad);
-        Spinner spMoneda1 = (Spinner) findViewById(R.id.spMoneda1);
-        Spinner spMoneda2 = (Spinner) findViewById(R.id.spMoneda2);
-        Button btnConvertir = (Button) findViewById(R.id.btnConvertir);
+        edCantidad = (EditText) findViewById(R.id.edCantidad);
+        spMoneda1 = (Spinner) findViewById(R.id.spMoneda1);
+        spMoneda2 = (Spinner) findViewById(R.id.spMoneda2);
+        btnConvertir = (Button) findViewById(R.id.btnConvertir);
         tvSolucion = (TextView) findViewById(R.id.tvSolucion);
 
-        AsynConversiones task = new AsynConversiones();
-        //Call execute
-        task.execute();
-
+        spinner_adapter = ArrayAdapter.createFromResource( this, R.array.monedas , android.R.layout.simple_spinner_item);
+        spinner_adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spMoneda1.setAdapter(spinner_adapter);
+        spMoneda2.setAdapter(spinner_adapter);
     }
 
     private class AsynConversiones extends AsyncTask<String, Void, Void> {
@@ -68,7 +77,8 @@ public class MainActivity extends Activity {
         @Override
         protected void onPostExecute(Void result) {
             Log.i(TAG, "onPostExecute");
-            tvSolucion.setText(respuesta);
+            tvSolucion.setText(String.valueOf(Double.parseDouble(respuesta) * Double.parseDouble(edCantidad.getText().toString())));
+            Log.i(TAG, respuesta);
         }
 
         @Override
@@ -125,7 +135,7 @@ public class MainActivity extends Activity {
         try {
             Process p = java.lang.Runtime.getRuntime().exec("ping -c 1 www.google.es");
 
-            int val           = p.waitFor();
+            int val = p.waitFor();
             boolean reachable = (val == 0);
             return reachable;
 
@@ -136,21 +146,25 @@ public class MainActivity extends Activity {
         return false;
     }
 
-    public double convertirDivisa(View v){
-        double cantidad = 0;
+    public void convertirDivisa(View v){
 
+        moneda1 = spMoneda1.getSelectedItem().toString();
+        Log.i(TAG, moneda1);
+        moneda2 = spMoneda2.getSelectedItem().toString();
+        Log.i(TAG, moneda2);
+        task = new AsynConversiones();
+        task.execute();
+        /*
         if(networkHabilitada()){
             if(accesoInternet()){
 
             }
             else{
-                Toast.makeText(getApplicationContext(), "No tienes conexion a Internet", Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(), "No tienes conexión a Internet", Toast.LENGTH_LONG).show();
             }
         }
         else{
             Toast.makeText(getApplicationContext(), "No tienes Internet habilitado", Toast.LENGTH_LONG).show();
-        }
-
-        return cantidad;
+        }*/
     }
 }

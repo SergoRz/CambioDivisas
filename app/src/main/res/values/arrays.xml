@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="monedas">
+        <item>EUR</item>
+        <item>USD</item>
+        <item>GBP</item>
+        <item>MXN</item>
+        <item>JPY</item>
+    </string-array>
+</resources>
