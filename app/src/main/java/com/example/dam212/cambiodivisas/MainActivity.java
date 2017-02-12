@@ -11,7 +11,6 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -56,7 +55,6 @@ public class MainActivity extends Activity {
     private Spinner spMoneda1;
     private Spinner spMoneda2;
     private EditText edCantidad ;
-    private Button btnConvertir;
     private ArrayAdapter spinner_adapter;
     private AsynConversionSOAP conversionSOAP;
     private AsynConversionREST conversionREST;
@@ -69,7 +67,6 @@ public class MainActivity extends Activity {
         edCantidad = (EditText) findViewById(R.id.edCantidad);
         spMoneda1 = (Spinner) findViewById(R.id.spMoneda1);
         spMoneda2 = (Spinner) findViewById(R.id.spMoneda2);
-        btnConvertir = (Button) findViewById(R.id.btnConvertir);
         tvSolucion = (TextView) findViewById(R.id.tvSolucion);
 
         spinner_adapter = ArrayAdapter.createFromResource( this, R.array.monedas , android.R.layout.simple_spinner_item);
@@ -90,13 +87,11 @@ public class MainActivity extends Activity {
         protected void onPostExecute(Void result) {
             Log.i(TAG, "onPostExecute");
             tvSolucion.setText(String.valueOf(Double.parseDouble(respuesta) * Double.parseDouble(edCantidad.getText().toString())));
-            //Log.i(TAG, respuesta);
         }
 
         @Override
         protected void onPreExecute() {
             Log.i(TAG, "onPreExecute");
-            //tv.setText("Calculating...");
         }
 
         @Override
