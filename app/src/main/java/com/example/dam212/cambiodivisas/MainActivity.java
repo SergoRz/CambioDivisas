@@ -123,6 +123,8 @@ public class MainActivity extends Activity {
 
 
     public void getConversionREST(String moneda1, String moneda2){
+
+
         HttpClient httpClient = new DefaultHttpClient();
 
         String id = txtId.getText().toString();
