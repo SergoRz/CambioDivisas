@@ -9,6 +9,7 @@ import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.TextView;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -32,14 +33,15 @@ Peso Mexicano*/
 @TargetApi(Build.VERSION_CODES.CUPCAKE)
 public class MainActivity extends Activity {
 
-    private final String NAMESPACE = "http://www.w3schools.com/webservices/";
-    private final String URL = "http://www.w3schools.com/webservices/tempconvert.asmx";
-    private final String SOAP_ACTION = "http://www.w3schools.com/webservices/CelsiusToFahrenheit";
-    private final String METHOD_NAME = "CelsiusToFahrenheit";
-    private String TAG = "PGGURU";
-    private static String celcius;
-    private static String fahren;
-
+    private final String NAMESPACE = "http://www.webservicex.net/";
+    private final String URL = "http://www.webservicex.net/CurrencyConvertor.asmx";
+    private final String SOAP_ACTION = "http://www.webservicex.net/CurrencyConvertor.asmx/ConversionRate";
+    private final String METHOD_NAME = "ConversionRate";
+    private String TAG = "Accion";
+    private static String moneda1 = "EUR";
+    private static String moneda2 = "USD";
+    private static String respuesta;
+    TextView tvSolucion;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -50,7 +52,7 @@ public class MainActivity extends Activity {
         Spinner spMoneda2 = (Spinner) findViewById(R.id.spMoneda2);
         TextView tvSolucion = (TextView) findViewById(R.id.tvCantidad);
         Button btnConvertir = (Button) findViewById(R.id.btnConvertir);
-
+        tvSolucion = (TextView) findViewById(R.id.tvSolucion);
 
 
         //AsynConversiones task = new AsynConversiones();
@@ -63,14 +65,14 @@ public class MainActivity extends Activity {
         @Override
         protected Void doInBackground(String... params) {
             Log.i(TAG, "doInBackground");
-            getFahrenheit(celcius);
+            getConversion(moneda1, moneda2);
             return null;
         }
 
         @Override
         protected void onPostExecute(Void result) {
             Log.i(TAG, "onPostExecute");
-            //tv.setText(fahren + "° F");
+            tvSolucion.setText(respuesta);
         }
 
         @Override
@@ -84,20 +86,13 @@ public class MainActivity extends Activity {
             Log.i(TAG, "onProgressUpdate");
         }
 
-        public void getFahrenheit(String celsius) {
+        public void getConversion(String moneda1, String moneda2) {
             //Create request
             SoapObject request = new SoapObject(NAMESPACE, METHOD_NAME);
-            //Property which holds input parameters
-            PropertyInfo celsiusPI = new PropertyInfo();
-            //Set Name
-            celsiusPI.setName("Celsius");
-            //Set Value
-            celsiusPI.setValue(celsius);
-            //Set dataType
-            celsiusPI.setType(double.class);
-            //Add the property to request object
-            request.addProperty(celsiusPI);
-            //Create envelope
+
+            request.addProperty("FromCurrency", moneda1);
+            request.addProperty("ToCurrency", moneda2);
+
             SoapSerializationEnvelope envelope = new SoapSerializationEnvelope(SoapEnvelope.VER11);
             envelope.dotNet = true;
             //Set output SOAP object
@@ -111,7 +106,7 @@ public class MainActivity extends Activity {
                 //Get the response
                 SoapPrimitive response = (SoapPrimitive) envelope.getResponse();
                 //Assign it to fahren static variable
-                fahren = response.toString();
+                respuesta = response.toString();
 
             } catch (Exception e) {
                 e.printStackTrace();
