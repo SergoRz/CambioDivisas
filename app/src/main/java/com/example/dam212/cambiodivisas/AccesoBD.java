@@ -51,9 +51,18 @@ public class AccesoBD extends SQLiteOpenHelper{
     }
 
     public double obtenerValor(SQLiteDatabase db, ConversionMoneda cm){
-        String[] args = new String[] {cm.getMoneda1(), cm.getMoneda2()};
-        Cursor c = db.rawQuery("SELECT valor FROM divisas WHERE moneda1=? and moneda2=?", args);
-        double valor = c.getDouble(0);
+        double valor = 0;
+
+        String[] selectionArgs = new String[] {cm.getMoneda1(), cm.getMoneda2()};
+        String columns[] = new String[]{"valor"};
+
+        String query = "select valor from divisas WHERE moneda1=? and moneda2=?";
+        Cursor c  = db.rawQuery(query, selectionArgs);
+
+        //Nos aseguramos de que existe al menos un registro
+        if (c.moveToFirst()) {
+            valor = c.getDouble(0);
+        }
 
         return valor;
     }

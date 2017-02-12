@@ -135,9 +135,5 @@
                 android:id="@+id/btnConvRest"
                 android:onClick="convertirDivisaREST"/>
         </LinearLayout>
-
-
-
     </LinearLayout>
-
 </RelativeLayout>
