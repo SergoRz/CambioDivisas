@@ -225,7 +225,6 @@ public class MainActivity extends Activity {
         if(networkHabilitada()){
             conversionREST = new AsynConversionREST();
             conversionREST.execute();
-
         }
         else{
             Toast.makeText(getApplicationContext(), "No hay conexion a internet, valor obtenido de la base de datos", Toast.LENGTH_LONG).show();
