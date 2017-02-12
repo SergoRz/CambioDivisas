@@ -80,8 +80,6 @@ public class MainActivity extends Activity {
 
         abd = new AccesoBD(this);
         db = abd.getWritableDatabase();
-
-        introducirDivisasBD();
     }
 
     private class AsynConversionSOAP extends AsyncTask<String, Void, Void> {
@@ -205,28 +203,36 @@ public class MainActivity extends Activity {
     }
 
     public void convertirDivisaSOAP(View v){
+        moneda1 = spMoneda1.getSelectedItem().toString();
+        moneda2 = spMoneda2.getSelectedItem().toString();
 
         if(networkHabilitada()){
-            moneda1 = spMoneda1.getSelectedItem().toString();
-            moneda2 = spMoneda2.getSelectedItem().toString();
             conversionSOAP = new AsynConversionSOAP();
             conversionSOAP.execute();
         }
         else{
-            Double valor = abd.obtenerValor();
-            Toast.makeText(getApplicationContext(), "No hay conexion a internet", Toast.LENGTH_LONG).show();
+            Toast.makeText(getApplicationContext(), "No hay conexion a internet, valor obtenido de la base de datos", Toast.LENGTH_LONG).show();
+            ConversionMoneda cm = new ConversionMoneda(moneda1, moneda2);
+            double valor = abd.obtenerValor(db, cm);
+            double resultado = valor*Double.parseDouble(edCantidad.getText().toString());
+            tvSolucion.setText(String.valueOf(resultado));
         }
     }
 
     public void convertirDivisaREST(View v){
+        moneda1 = spMoneda1.getSelectedItem().toString();
+        moneda2 = spMoneda2.getSelectedItem().toString();
+
         if(networkHabilitada()){
-            moneda1 = spMoneda1.getSelectedItem().toString();
-            moneda2 = spMoneda2.getSelectedItem().toString();
             conversionREST = new AsynConversionREST();
             conversionREST.execute();
         }
         else{
-            Toast.makeText(getApplicationContext(), "No hay conexion a internet", Toast.LENGTH_LONG).show();
+            Toast.makeText(getApplicationContext(), "No hay conexion a internet, valor obtenido de la base de datos", Toast.LENGTH_LONG).show();
+            ConversionMoneda cm = new ConversionMoneda(moneda1, moneda2);
+            double valor = abd.obtenerValor(db, cm);
+            double resultado = valor*Double.parseDouble(edCantidad.getText().toString());
+            tvSolucion.setText(String.valueOf(resultado));
         }
     }
 
