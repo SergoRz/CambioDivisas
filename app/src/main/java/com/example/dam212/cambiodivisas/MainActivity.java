@@ -134,13 +134,13 @@ public class MainActivity extends Activity {
                 conn.setRequestProperty("Accept", "application/json");
 
                 if (conn.getResponseCode() != 200) {
-                    throw new RuntimeException("Failed : HTTP error code : " + conn.getResponseCode());
+                    throw new RuntimeException("Error : codigo de error HTTP  : " + conn.getResponseCode());
                 }
 
                 BufferedReader br = new BufferedReader(new InputStreamReader((conn.getInputStream())));
 
                 String output;
-                Log.i(TAG, "Output from Server .... \n");
+                Log.i(TAG, "Datos de salida del servidor \n");
                 while ((output = br.readLine()) != null) {
                     Log.i(TAG, output);
                 }
