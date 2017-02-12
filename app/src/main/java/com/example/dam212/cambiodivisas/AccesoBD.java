@@ -3,6 +3,7 @@ package com.example.dam212.cambiodivisas;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteException;
 import android.database.sqlite.SQLiteOpenHelper;
 
 /**
@@ -28,6 +29,10 @@ public class AccesoBD extends SQLiteOpenHelper{
     @Override
     public void onCreate(SQLiteDatabase db) {
         db.execSQL(sqlCreate);
+
+        try{
+            introducirDivisasBD(db);
+        }catch(SQLiteException e){}
     }
 
     @Override
@@ -49,5 +54,47 @@ public class AccesoBD extends SQLiteOpenHelper{
         double valor = c.getDouble(0);
 
         return valor;
+    }
+
+    public void introducirDivisasBD(SQLiteDatabase db){
+        ConversionMoneda cmEE = new ConversionMoneda("EUR", "EUR", 1);
+        ConversionMoneda cmEU = new ConversionMoneda("EUR", "USD", 1.06);
+        ConversionMoneda cmEG = new ConversionMoneda("EUR", "GBP", 0.85);
+        ConversionMoneda cmEM = new ConversionMoneda("EUR", "MXN", 21.62);
+
+        ConversionMoneda cmUU = new ConversionMoneda("USD", "USD", 1);
+        ConversionMoneda cmUE = new ConversionMoneda("USD", "EUR", 0.94);
+        ConversionMoneda cmUG = new ConversionMoneda("USD", "GBP", 0.80);
+        ConversionMoneda cmUM = new ConversionMoneda("USD", "MXN", 20.33);
+
+        ConversionMoneda cmGE = new ConversionMoneda("GBP","EUR",1.17);
+        ConversionMoneda cmGU = new ConversionMoneda("GBP","USD",1.24);
+        ConversionMoneda cmGG = new ConversionMoneda("GBP","GBP", 1);
+        ConversionMoneda cmGM = new ConversionMoneda("GBP","MXN", 25.37);
+
+        ConversionMoneda cmME = new ConversionMoneda("MXN","EUR", 0.0462);
+        ConversionMoneda cmMU = new ConversionMoneda("MXN","USD", 0.049);
+        ConversionMoneda cmMG = new ConversionMoneda("MXN","GBP",0.039);
+        ConversionMoneda cmMM = new ConversionMoneda("MXN","MXN", 1);
+
+        insert(db, cmEE);
+        insert(db, cmEU);
+        insert(db, cmEG);
+        insert(db, cmEM);
+
+        insert(db, cmUU);
+        insert(db, cmUE);
+        insert(db, cmUG);
+        insert(db, cmUM);
+
+        insert(db, cmGE);
+        insert(db, cmGU);
+        insert(db, cmGG);
+        insert(db, cmGM);
+
+        insert(db, cmME);
+        insert(db, cmMU);
+        insert(db, cmMG);
+        insert(db, cmMM);
     }
 }

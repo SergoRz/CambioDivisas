@@ -230,45 +230,5 @@ public class MainActivity extends Activity {
         }
     }
 
-    public void introducirDivisasBD(){
-        ConversionMoneda cmEE = new ConversionMoneda("EUR", "EUR", 1);
-        ConversionMoneda cmEU = new ConversionMoneda("EUR", "USD", 1.06);
-        ConversionMoneda cmEG = new ConversionMoneda("EUR", "GBP", 0.85);
-        ConversionMoneda cmEM = new ConversionMoneda("EUR", "MXN", 21.62);
 
-        ConversionMoneda cmUU = new ConversionMoneda("USD", "USD", 1);
-        ConversionMoneda cmUE = new ConversionMoneda("USD", "EUR", 0.94);
-        ConversionMoneda cmUG = new ConversionMoneda("USD", "GBP", 0.80);
-        ConversionMoneda cmUM = new ConversionMoneda("USD", "MXN", 20.33);
-
-        ConversionMoneda cmGE = new ConversionMoneda("GBP","EUR",1.17);
-        ConversionMoneda cmGU = new ConversionMoneda("GBP","USD",1.24);
-        ConversionMoneda cmGG = new ConversionMoneda("GBP","GBP", 1);
-        ConversionMoneda cmGM = new ConversionMoneda("GBP","MXN", 25.37);
-
-        ConversionMoneda cmME = new ConversionMoneda("MXN","EUR", 0.0462);
-        ConversionMoneda cmMU = new ConversionMoneda("MXN","USD", 0.049);
-        ConversionMoneda cmMG = new ConversionMoneda("MXN","GBP",0.039);
-        ConversionMoneda cmMM = new ConversionMoneda("MXN","MXN", 1);
-
-        abd.insert(db, cmEE);
-        abd.insert(db, cmEU);
-        abd.insert(db, cmEG);
-        abd.insert(db, cmEM);
-
-        abd.insert(db, cmUU);
-        abd.insert(db, cmUE);
-        abd.insert(db, cmUG);
-        abd.insert(db, cmUM);
-
-        abd.insert(db, cmGE);
-        abd.insert(db, cmGU);
-        abd.insert(db, cmGG);
-        abd.insert(db, cmGM);
-
-        abd.insert(db, cmME);
-        abd.insert(db, cmMU);
-        abd.insert(db, cmMG);
-        abd.insert(db, cmMM);
-    }
 }
