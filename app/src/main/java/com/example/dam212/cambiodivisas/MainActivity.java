@@ -213,6 +213,7 @@ public class MainActivity extends Activity {
             conversionSOAP.execute();
         }
         else{
+
             Toast.makeText(getApplicationContext(), "No hay conexion a internet", Toast.LENGTH_LONG).show();
         }
     }
