@@ -15,6 +15,11 @@ public class ConversionMoneda {
         this.valor = valor;
     }
 
+    public ConversionMoneda(String moneda1, String moneda2){
+        this.moneda1 = moneda1;
+        this.moneda2 = moneda2;
+    }
+
     public String getMoneda1() {
         return moneda1;
     }
