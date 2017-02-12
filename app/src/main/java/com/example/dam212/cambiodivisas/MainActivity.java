@@ -15,7 +15,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
-
+import org.json.JSONObject;
 import org.ksoap2.SoapEnvelope;
 import org.ksoap2.serialization.SoapObject;
 import org.ksoap2.serialization.SoapPrimitive;
@@ -121,6 +121,34 @@ public class MainActivity extends Activity {
 
     }
 
+
+    public void getConversionREST(String moneda1, String moneda2){
+        HttpClient httpClient = new DefaultHttpClient();
+
+        String id = txtId.getText().toString();
+
+        HttpGet del = new HttpGet("http://www.webservicex.net/CurrencyConvertor.asmx/ConversionRate?FromCurrency=EUR&ToCurrency=EUR");
+
+        del.setHeader("content-type", "application/json");
+
+        try
+        {
+            HttpResponse resp = httpClient.execute(del);
+            String respStr = EntityUtils.toString(resp.getEntity());
+
+            JSONObject respJSON = new JSONObject(respStr);
+
+            int idCli = respJSON.getInt("Id");
+            String nombCli = respJSON.getString("Nombre");
+            int telefCli = respJSON.getInt("Telefono");
+
+            lblResultado.setText("" + idCli + "-" + nombCli + "-" + telefCli);
+        }
+        catch(Exception ex)
+        {
+            Log.e("ServicioRest","Error!", ex);
+        }
+    }
     public boolean networkHabilitada(){
         ConnectivityManager connectivityManager = (ConnectivityManager)
                 getSystemService(Context.CONNECTIVITY_SERVICE);
