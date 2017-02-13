@@ -188,13 +188,11 @@ public class MainActivity extends Activity {
         protected void onPostExecute(Void result) {
             Log.i(TAG, "onPostExecute");
             tvSolucion.setText(String.valueOf(Double.parseDouble(respuesta) * Double.parseDouble(edCantidad.getText().toString())));
-            //Log.i(TAG, respuesta);
         }
 
         @Override
         protected void onPreExecute() {
             Log.i(TAG, "onPreExecute");
-            //tv.setText("Calculating...");
         }
 
         @Override
