@@ -130,6 +130,7 @@ public class MainActivity extends Activity {
         @Override
         protected void onProgressUpdate(Void... values) {
             Log.i(TAG, "onProgressUpdate");
+
         }
 
         public void getConversionSOAP() {
