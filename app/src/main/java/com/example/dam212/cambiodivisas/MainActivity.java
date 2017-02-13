@@ -63,33 +63,57 @@ public class MainActivity extends Activity {
     private static SQLiteDatabase db;
     private AccesoBD abd;
 
+    /**
+     * Metodo que se ejecuta al iniciar la clase, se encarga de enlazar los atributos de la clase con los objetos
+     * dispuesto en la interfaz grafica.
+     * Ademas instancia la clase AccesoBD para poder acceder a la tabla de divisas y recoger el valor de cambio
+     * cuando no haya conexion a Internet.
+     * @param savedInstanceState Estado de la aplicacion
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        edCantidad = (EditText) findViewById(R.id.edCantidad);
-        spMoneda1 = (Spinner) findViewById(R.id.spMoneda1);
-        spMoneda2 = (Spinner) findViewById(R.id.spMoneda2);
-        tvSolucion = (TextView) findViewById(R.id.tvSolucion);
+        edCantidad = (EditText) findViewById(R.id.edCantidad); //EditText para introducir la cantidad que se desea convertir
+        spMoneda1 = (Spinner) findViewById(R.id.spMoneda1); //Spinner que contiene el tipo de moneda que se quiere convertir
+        spMoneda2 = (Spinner) findViewById(R.id.spMoneda2); //Spinner que contiene el tipo de moneda a la que se quiere convertir
+        tvSolucion = (TextView) findViewById(R.id.tvSolucion); //TextView donde se muestra el valor convertido
 
-        spinner_adapter = ArrayAdapter.createFromResource( this, R.array.monedas , android.R.layout.simple_spinner_item);
+        //Adaptadores que introduce el array de monedas en los sppiners
+        spinner_adapter = ArrayAdapter.createFromResource(this, R.array.monedas , android.R.layout.simple_spinner_item);
         spinner_adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spMoneda1.setAdapter(spinner_adapter);
         spMoneda2.setAdapter(spinner_adapter);
 
-        abd = new AccesoBD(this);
-        db = abd.getWritableDatabase();
+        abd = new AccesoBD(this); //Instancia de la clase AccesoBD
+        db = abd.getWritableDatabase(); //Base de datos de la clase AccesoBD
     }
 
+    /**
+     * Clase interna que se encarga de convertir la cantidad mediante la tecnologia SOAP.
+     * La clase extiende de AsyncTask para que la ejecucion de la conversion se haga en segundo plano
+     * y no haga esperar al hilo principal. Esto se consigue mediante el metodo doInBackground.
+     */
     private class AsynConversionSOAP extends AsyncTask<String, Void, Void> {
+        /**
+         * Metodo que se ejecuta en segundo plano, se encarga de llamar al metodo getConversionSOAP, el cual se
+         * encarga de realizar la conversion.
+         * @param params Parametros que se le pueden pasar, en este caso no se pasa ninguno
+         * @return Devuelve null
+         */
         @Override
         protected Void doInBackground(String... params) {
-            Log.i(TAG, "doInBackground");
-            getConversionSOAP(moneda1, moneda2);
+            getConversionSOAP(); //Metodo que obtiene la cantidad convertida
             return null;
         }
 
+        /**
+         * Metodo que se ejecuta una vez finalizado el metodo doInBackground
+         * Se encarga de multiplicar la cantidad deseada por el valor de cambio recibido del servicio web
+         * y mostrarlo en el TextView de la solucion.
+         * @param result
+         */
         @Override
         protected void onPostExecute(Void result) {
             Log.i(TAG, "onPostExecute");
@@ -106,7 +130,7 @@ public class MainActivity extends Activity {
             Log.i(TAG, "onProgressUpdate");
         }
 
-        public void getConversionSOAP(String moneda1, String moneda2) {
+        public void getConversionSOAP() {
             //Create request
             SoapObject request = new SoapObject(NAMESPACE, METHOD_NAME);
 
@@ -138,7 +162,7 @@ public class MainActivity extends Activity {
         @Override
         protected Void doInBackground(String... params) {
             Log.i(TAG, "doInBackground");
-            getConversionREST(moneda1, moneda2);
+            getConversionREST();
             return null;
         }
 
@@ -160,7 +184,7 @@ public class MainActivity extends Activity {
             Log.i(TAG, "onProgressUpdate");
         }
 
-        public void getConversionREST(String moneda1, String moneda2) {
+        public void getConversionREST() {
             try{
                 URL url = new URL("http://www.webservicex.net/CurrencyConvertor.asmx/ConversionRate?FromCurrency=" + moneda1 + "&ToCurrency=" + moneda2);
                 HttpURLConnection conn = (HttpURLConnection) url.openConnection();
