@@ -1,14 +1,21 @@
 package com.example.dam212.cambiodivisas;
 
 /**
+ * Clase que guarda la informacion de una conversion, los dos tipos de moneda convertidos y el valor.
  * Created by EmilioCB on 12/02/2017.
  */
 
 public class ConversionMoneda {
 
-    private double valor;
-    private String moneda1, moneda2;
+    private double valor; //Valor de cambio
+    private String moneda1, moneda2; //Monedas que se quieren convertir
 
+    /**
+     * Constructor que contiene todos los atributos de la clase.
+     * @param moneda1 Moneda que se quiere convertir
+     * @param moneda2 Moneda a la que se quiere convertir
+     * @param valor Valor de cambio
+     */
     public ConversionMoneda(String moneda1, String moneda2, double valor){
         this.moneda1 = moneda1;
         this.moneda2 = moneda2;
