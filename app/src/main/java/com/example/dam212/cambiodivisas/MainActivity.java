@@ -137,9 +137,17 @@ public class MainActivity extends Activity {
     }
 
     /**
-     *
+     * Clase AsynConversionREST
+     * La clase AsynConversionREST se encarga de acceder al servicio web mediante la
+     * tecnologia REST, recoger el valor de cambio y aplicarlo a la cantidad introducida.
      */
     private class AsynConversionREST extends AsyncTask<String, Void, Void> {
+        /**
+         * Método principal de la claseAsynConversionRest es un método sobreescrito de la clase
+         * AsyncTask, este método se ejecutara cuando se llame al metodo execute() de esta misma clase.
+         * @param params parametros que puede recibir el AsynTask
+         * @return devuelve null
+         */
         @Override
         protected Void doInBackground(String... params) {
             Log.i(TAG, "doInBackground");
@@ -147,6 +155,10 @@ public class MainActivity extends Activity {
             return null;
         }
 
+        /**
+         * Metodo que se ejecuta despues de que el AsynTask finalice
+         * @param result
+         */
         @Override
         protected void onPostExecute(Void result) {
             Log.i(TAG, "onPostExecute");
@@ -163,6 +175,13 @@ public class MainActivity extends Activity {
             Log.i(TAG, "onProgressUpdate");
         }
 
+        /**
+         * Metodo que mediante la clase HttpURLConnection y URL se conecta a un servicio web soliciando la accion GET, establecida en el
+         * metodo setRequestMethod, si el codigo que retorna esta conexion es 200 se notifica que ha habido un error de conexion y se
+         * desconecta. En el caso de que la conexion retorne 200 significa que se ha podido establecer la conexion correctamente, en ese caso
+         * se procede a leer el XML que devuelve el servicio web, para esto se utiliza las clases XmlPullParserFactory y la clase XmlPullParser,
+         * mediante el input de esta ultima clase se obtendra el dato que queremos obtener, el cambio de divisas.
+         */
         public void getConversionREST() {
             try{
                 URL url = new URL("http://www.webservicex.net/CurrencyConvertor.asmx/ConversionRate?FromCurrency=" + moneda1 + "&ToCurrency=" + moneda2);
@@ -171,22 +190,23 @@ public class MainActivity extends Activity {
                 conn.setRequestProperty("Accept", "application/json");
 
                 if (conn.getResponseCode() != 200) {
-                    throw new RuntimeException("Error : codigo de error HTTP  : " + conn.getResponseCode());
+                    Toast.makeText(getApplicationContext(), "Error : codigo de error HTTP  : " + conn.getResponseCode(), Toast.LENGTH_LONG).show();
+                }else{
+                    XmlPullParserFactory xpf =  XmlPullParserFactory.newInstance();
+                    xpf.setNamespaceAware(true);
+
+                    XmlPullParser xp = xpf.newPullParser();
+
+                    BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+                    xp.setInput(br);
+                    xp.nextTag();
+                    xp.next();
+
+                    respuesta = xp.getText();
                 }
 
-                XmlPullParserFactory xpf =  XmlPullParserFactory.newInstance();
-                xpf.setNamespaceAware(true);
-
-                XmlPullParser xp = xpf.newPullParser();
-
-                BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream()));
-                xp.setInput(br);
-                xp.nextTag();
-                xp.next();
-
-                respuesta = xp.getText();
-
                 conn.disconnect();
+
             } catch (MalformedURLException e) {
                 e.printStackTrace();
             } catch (IOException e) {
