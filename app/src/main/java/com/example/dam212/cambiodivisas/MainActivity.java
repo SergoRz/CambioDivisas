@@ -50,7 +50,6 @@ public class MainActivity extends Activity {
     private final String URLSOAP = "http://www.webservicex.net/CurrencyConvertor.asmx";
     private final String SOAP_ACTION = "http://www.webserviceX.NET/ConversionRate";
     private final String METHOD_NAME = "ConversionRate";
-    private String TAG = "Accion";
     private static String moneda1;
     private static String moneda2;
     private static String respuesta;

@@ -7,30 +7,41 @@ import android.database.sqlite.SQLiteException;
 import android.database.sqlite.SQLiteOpenHelper;
 
 /**
+ * Clase que se encarga de hacer los accesos a la base de datos cuando no hoy conexion a Internet.
+ * Se utiliza la base de datos divisasDB.db de SQLite, en contrecto se trabaja con la tabla divisas.
+ * Esta tabla contiene el valor de cambio entre las diferentes monedas.
  * Created by EmilioCB on 12/02/2017.
  */
 
 public class AccesoBD extends SQLiteOpenHelper{
-    public static final int DATABASE_VERSION = 1;//Contexto de acción para el helper.
-    public static final String DATABASE_NAME = "divisasDB.db";
-    //Nombre del archivo con extensión .db
-    //Sentencia SQL que crea la tabla
-    String sqlCreate = "CREATE TABLE IF NOT EXISTS divisas(" +
+    public static final int DATABASE_VERSION = 1; //Contexto de acción para el helper.
+    public static final String DATABASE_NAME = "divisasDB.db"; //Nombre de la base de datos
+
+    //Sentencia SQL que crea la tabla divisas
+    private String sqlCreate = "CREATE TABLE IF NOT EXISTS divisas(" +
             "moneda1 VARCHAR(3) NOT NULL," +
             "moneda2 VARCHAR(3) NOT NULL," +
             "valor DOUBLE NOT NULL," +
             " PRIMARY KEY(moneda1, moneda2));";
 
+    /**
+     * Constructor de la clase, contiene el contexto, el nombre y la version de la base de datos
+     * @param context Contexto de la actividad principal
+     */
     public AccesoBD(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
 
+    /**
+     * Metodo que se ejecuta al instanciar un objeto de la clase AccesoBD
+     * Se encarga de crear la tabla en la base de datos y de realizar los inserts correspondientes
+     * @param db Base de datos que recibe
+     */
     @Override
     public void onCreate(SQLiteDatabase db) {
-        db.execSQL(sqlCreate);
-
+        db.execSQL(sqlCreate); //Se ejecuta el script de la construccion de la tabla
         try{
-            introducirDivisasBD(db);
+            introducirDivisasBD(db); //Se introducen los valores de cambio en la tabla creada
         }catch(SQLiteException e){
             e.printStackTrace();
         }
@@ -64,7 +75,7 @@ public class AccesoBD extends SQLiteOpenHelper{
         return valor;
     }
 
-    public void introducirDivisasBD(SQLiteDatabase db){
+    public void introducirDivisasBD(SQLiteDatabase db)throws SQLiteException{
         ConversionMoneda cmEE = new ConversionMoneda("EUR", "EUR", 1);
         ConversionMoneda cmEU = new ConversionMoneda("EUR", "USD", 1.06);
         ConversionMoneda cmEG = new ConversionMoneda("EUR", "GBP", 0.85);
