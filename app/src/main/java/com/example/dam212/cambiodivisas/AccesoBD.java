@@ -15,7 +15,7 @@ public class AccesoBD extends SQLiteOpenHelper{
     public static final String DATABASE_NAME = "divisasDB.db";
     //Nombre del archivo con extensión .db
     //Sentencia SQL que crea la tabla
-    String sqlCreate = "CREATE TABLE IF NOT EXISTS divisas(" +
+    private String sqlCreate = "CREATE TABLE IF NOT EXISTS divisas(" +
             "moneda1 VARCHAR(3) NOT NULL," +
             "moneda2 VARCHAR(3) NOT NULL," +
             "valor DOUBLE NOT NULL," +
@@ -39,6 +39,11 @@ public class AccesoBD extends SQLiteOpenHelper{
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {}
 
+    /**
+     *
+     * @param db
+     * @param cm
+     */
     public void insert(SQLiteDatabase db, ConversionMoneda cm){
         String sqlInsert = "INSERT INTO divisas VALUES('"
                 + cm.getMoneda1() + "','"
@@ -64,6 +69,10 @@ public class AccesoBD extends SQLiteOpenHelper{
         return valor;
     }
 
+    /**
+     * Se ejecuta la P
+     * @param db
+     */
     public void introducirDivisasBD(SQLiteDatabase db){
 
         ConversionMoneda cmEE = new ConversionMoneda("EUR", "EUR", 1);
