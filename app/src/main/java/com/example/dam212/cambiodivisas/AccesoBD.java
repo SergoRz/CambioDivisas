@@ -50,6 +50,11 @@ public class AccesoBD extends SQLiteOpenHelper{
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {}
 
+    /**
+     *
+     * @param db
+     * @param cm
+     */
     public void insert(SQLiteDatabase db, ConversionMoneda cm){
         String sqlInsert = "INSERT INTO divisas VALUES('"
                 + cm.getMoneda1() + "','"
