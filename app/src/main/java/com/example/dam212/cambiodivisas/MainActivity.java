@@ -88,7 +88,7 @@ public class MainActivity extends Activity {
         @Override
         protected Void doInBackground(String... params) {
             Log.i(TAG, "doInBackground");
-            getConversionSOAP(moneda1, moneda2);
+            getConversionSOAP();
             return null;
         }
 
@@ -108,7 +108,7 @@ public class MainActivity extends Activity {
             Log.i(TAG, "onProgressUpdate");
         }
 
-        public void getConversionSOAP(String moneda1, String moneda2) {
+        public void getConversionSOAP() {
             //Create request
             SoapObject request = new SoapObject(NAMESPACE, METHOD_NAME);
 
@@ -143,7 +143,7 @@ public class MainActivity extends Activity {
         @Override
         protected Void doInBackground(String... params) {
             Log.i(TAG, "doInBackground");
-            getConversionREST(moneda1, moneda2);
+            getConversionREST();
             return null;
         }
 
@@ -151,13 +151,11 @@ public class MainActivity extends Activity {
         protected void onPostExecute(Void result) {
             Log.i(TAG, "onPostExecute");
             tvSolucion.setText(String.valueOf(Double.parseDouble(respuesta) * Double.parseDouble(edCantidad.getText().toString())));
-            //Log.i(TAG, respuesta);
         }
 
         @Override
         protected void onPreExecute() {
             Log.i(TAG, "onPreExecute");
-            //tv.setText("Calculating...");
         }
 
         @Override
@@ -165,7 +163,7 @@ public class MainActivity extends Activity {
             Log.i(TAG, "onProgressUpdate");
         }
 
-        public void getConversionREST(String moneda1, String moneda2) {
+        public void getConversionREST() {
             try{
                 URL url = new URL("http://www.webservicex.net/CurrencyConvertor.asmx/ConversionRate?FromCurrency=" + moneda1 + "&ToCurrency=" + moneda2);
                 HttpURLConnection conn = (HttpURLConnection) url.openConnection();
