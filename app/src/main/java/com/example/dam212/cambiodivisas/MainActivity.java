@@ -147,29 +147,30 @@ public class MainActivity extends Activity {
          * en la variable respuesta.
          */
         public void getConversionSOAP() {
-            //Create request
+            //Se crea una instancia de SoapObject, el cual contiene la pagina web y el nombre del metodo
             SoapObject request = new SoapObject(NAMESPACE, METHOD_NAME);
 
+            //Se añaden las propiedades a la solicitud
             request.addProperty("FromCurrency", moneda1);
             request.addProperty("ToCurrency", moneda2);
 
+            //Se crea el contenedor que contiene la solicitud
             SoapSerializationEnvelope envelope = new SoapSerializationEnvelope(SoapEnvelope.VER11);
-            envelope.dotNet = true;
-            //Set output SOAP object
+            envelope.dotNet = true; //Compatibiliza con la codificacion por defecto
+            //Se realiza el envio de la solicitud
             envelope.setOutputSoapObject(request);
-            //Create HTTP call object
+            //Se crea el objeto de llamada HTTP
             HttpTransportSE androidHttpTransport = new HttpTransportSE(URLSOAP);
 
             try {
-                //Invole web service
+                //Se establece el campo de cabecera soapAction deseado
                 androidHttpTransport.call(SOAP_ACTION, envelope);
-                //Get the response
+                //Se obtiene la respuesta
                 SoapPrimitive response = (SoapPrimitive) envelope.getResponse();
-                //Assign it to fahren static variable
+                //Se asigna la respuesta a la variable reapuesta
                 respuesta = response.toString();
-
             } catch (Exception e) {
-                e.printStackTrace();
+                Toast.makeText(getApplicationContext(), "Error al conectarse al servidor", Toast.LENGTH_LONG).show();
             }
         }
     }
