@@ -114,25 +114,38 @@ public class MainActivity extends Activity {
          * Metodo que se ejecuta una vez finalizado el metodo doInBackground
          * Se encarga de multiplicar la cantidad deseada por el valor de cambio recibido del servicio web
          * y mostrarlo en el TextView de la solucion.
-         * @param result
+         * @param result Resultado de la operacion doInBackground
          */
         @Override
         protected void onPostExecute(Void result) {
-            Log.i(TAG, "onPostExecute");
-            tvSolucion.setText(String.valueOf(Double.parseDouble(respuesta) * Double.parseDouble(edCantidad.getText().toString())));
+            tvSolucion.setText(String.valueOf(Double.parseDouble(respuesta) *
+                    Double.parseDouble(edCantidad.getText().toString())));
         }
 
+        /**
+         * Metodo que se ejecuta antes del metodo doInBackground
+         * En este caso no realiza ninguna accion
+         */
         @Override
         protected void onPreExecute() {
-            Log.i(TAG, "onPreExecute");
         }
 
+        /**
+         * Meotodo que se ejecuta durante el doInBackground
+         * En este caso no realiza ninguna accion
+         * @param values Valores que indican el progreso
+         */
         @Override
         protected void onProgressUpdate(Void... values) {
-            Log.i(TAG, "onProgressUpdate");
-
         }
 
+        /**
+         * Metodo que se encarga de acceder al servicio web mediante un SoapObject,
+         * a este objeto de le pasan los parametros. A continuacion se crea un contenedor, el cual contiene
+         * el SoapObject, a continuacion se crea un httpTransportSE, para acceder al servicio web e indicarle
+         * la pagina web y los parametros. Una vez realizada la peticion, esta devuelve la respuesta y se guarda
+         * en la variable respuesta.
+         */
         public void getConversionSOAP() {
             //Create request
             SoapObject request = new SoapObject(NAMESPACE, METHOD_NAME);
