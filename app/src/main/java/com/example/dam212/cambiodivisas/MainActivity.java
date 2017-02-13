@@ -33,14 +33,12 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 
-/*
-Monedas:
-- Dolar Estadounidense
-- Euro
-- Libra esterlina
-- Yen Japones
-- Peso Mexicano*/
-
+/**
+ * Clase principal de la aplicacion, se ejecuta al iniciar la aplicacion
+ * Se encarga de cargar la interfaz de la pantalla, la cual esta descrita en el xml
+ * "activity_main".
+ * Contiene dos clases, la clase AsynConversionSOAP
+ */
 @TargetApi(Build.VERSION_CODES.CUPCAKE)
 public class MainActivity extends Activity {
 
@@ -202,38 +200,45 @@ public class MainActivity extends Activity {
     }
 
     public void convertirDivisaSOAP(View v){
-        moneda1 = spMoneda1.getSelectedItem().toString();
-        moneda2 = spMoneda2.getSelectedItem().toString();
+        if(!edCantidad.getText().toString().equals("")){
+            moneda1 = spMoneda1.getSelectedItem().toString();
+            moneda2 = spMoneda2.getSelectedItem().toString();
 
-        if(networkHabilitada()){
-            conversionSOAP = new AsynConversionSOAP();
-            conversionSOAP.execute();
+            if(networkHabilitada()){
+                conversionSOAP = new AsynConversionSOAP();
+                conversionSOAP.execute();
+            }
+            else{
+                Toast.makeText(getApplicationContext(), "No hay conexion a internet, valor obtenido de la base de datos", Toast.LENGTH_LONG).show();
+                ConversionMoneda cm = new ConversionMoneda(moneda1, moneda2);
+                double valor = abd.obtenerValor(db, cm);
+                double resultado = valor*Double.parseDouble(edCantidad.getText().toString());
+                tvSolucion.setText(String.valueOf(resultado));
+            }
         }
         else{
-            Toast.makeText(getApplicationContext(), "No hay conexion a internet, valor obtenido de la base de datos", Toast.LENGTH_LONG).show();
-            ConversionMoneda cm = new ConversionMoneda(moneda1, moneda2);
-            double valor = abd.obtenerValor(db, cm);
-            double resultado = valor*Double.parseDouble(edCantidad.getText().toString());
-            tvSolucion.setText(String.valueOf(resultado));
+            Toast.makeText(getApplicationContext(), "No se ha introducido cantidad a convertir", Toast.LENGTH_LONG).show();
         }
     }
 
     public void convertirDivisaREST(View v){
-        moneda1 = spMoneda1.getSelectedItem().toString();
-        moneda2 = spMoneda2.getSelectedItem().toString();
+        if(!edCantidad.getText().toString().equals("")) {
+            moneda1 = spMoneda1.getSelectedItem().toString();
+            moneda2 = spMoneda2.getSelectedItem().toString();
 
-        if(networkHabilitada()){
-            conversionREST = new AsynConversionREST();
-            conversionREST.execute();
+            if (networkHabilitada()) {
+                conversionREST = new AsynConversionREST();
+                conversionREST.execute();
+            } else {
+                Toast.makeText(getApplicationContext(), "No hay conexion a internet, valor obtenido de la base de datos", Toast.LENGTH_LONG).show();
+                ConversionMoneda cm = new ConversionMoneda(moneda1, moneda2);
+                double valor = abd.obtenerValor(db, cm);
+                double resultado = valor * Double.parseDouble(edCantidad.getText().toString());
+                tvSolucion.setText(String.valueOf(resultado));
+            }
         }
         else{
-            Toast.makeText(getApplicationContext(), "No hay conexion a internet, valor obtenido de la base de datos", Toast.LENGTH_LONG).show();
-            ConversionMoneda cm = new ConversionMoneda(moneda1, moneda2);
-            double valor = abd.obtenerValor(db, cm);
-            double resultado = valor*Double.parseDouble(edCantidad.getText().toString());
-            tvSolucion.setText(String.valueOf(resultado));
+            Toast.makeText(getApplicationContext(), "No se ha introducido cantidad a convertir", Toast.LENGTH_LONG).show();
         }
     }
-
-
 }
