@@ -281,11 +281,12 @@ public class MainActivity extends Activity {
      * @return booleano que indica si hay conexion o no.
      */
     public boolean networkHabilitada(){
+        //Instancia de la clase ConnectivityManager
         ConnectivityManager connectivityManager = (ConnectivityManager)
                 getSystemService(Context.CONNECTIVITY_SERVICE);
-
+        //Se obtiene la informacion de la conexion
         NetworkInfo actNetInfo = connectivityManager.getActiveNetworkInfo();
-
+        //Si existe asctNetInfo y esta conectado, devuelve true
         return (actNetInfo != null && actNetInfo.isConnected());
     }
 
