@@ -4,7 +4,6 @@ package com.example.dam212.cambiodivisas;
  * Clase que guarda la informacion de una conversion, los dos tipos de moneda convertidos y el valor.
  * Created by EmilioCB on 12/02/2017.
  */
-
 public class ConversionMoneda {
 
     private double valor; //Valor de cambio

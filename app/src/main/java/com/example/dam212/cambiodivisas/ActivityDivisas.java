@@ -45,7 +45,7 @@ import java.net.URL;
  * @author SergioSR y EmilioCB
  */
 @TargetApi(Build.VERSION_CODES.CUPCAKE)
-public class MainActivity extends Activity {
+public class ActivityDivisas extends Activity {
     private final String NAMESPACE = "http://www.webserviceX.NET/";
     private final String URLSOAP = "http://www.webservicex.net/CurrencyConvertor.asmx";
     private final String SOAP_ACTION = "http://www.webserviceX.NET/ConversionRate";
