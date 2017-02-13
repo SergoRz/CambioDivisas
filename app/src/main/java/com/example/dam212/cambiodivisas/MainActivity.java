@@ -37,7 +37,8 @@ import java.net.URL;
  * Clase principal de la aplicacion, se ejecuta al iniciar la aplicacion
  * Se encarga de cargar la interfaz de la pantalla, la cual esta descrita en el xml
  * "activity_main".
- * Contiene dos clases, la clase AsynConversionSOAP
+ * Contiene dos clases, la clase AsynConversionSOAP se encarga de acceder al servicio web
+ * mediante la tecnologia SOAP, recoger el valor de cambio y aplicarlo a la cantidad introducida.
  */
 @TargetApi(Build.VERSION_CODES.CUPCAKE)
 public class MainActivity extends Activity {
