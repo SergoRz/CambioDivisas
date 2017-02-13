@@ -42,6 +42,8 @@ import java.net.URL;
  * tecnologia SOAP, recoger el valor de cambio y aplicarlo a la cantidad introducida.
  * La clase AsynConversionREST se encarga de acceder al servicio web mediante la
  * tecnologia REST, recoger el valor de cambio y aplicarlo a la cantidad introducida.
+ *
+ * @author SergioSR y EmilioCB
  */
 @TargetApi(Build.VERSION_CODES.CUPCAKE)
 public class MainActivity extends Activity {
@@ -158,6 +160,9 @@ public class MainActivity extends Activity {
         }
     }
 
+    /**
+     *
+     */
     private class AsynConversionREST extends AsyncTask<String, Void, Void> {
         @Override
         protected Void doInBackground(String... params) {
@@ -218,6 +223,11 @@ public class MainActivity extends Activity {
         }
     }
 
+    /**
+     * Método que se encargar de comprobar si hay conexion a internet o no, utilizando las clases
+     * ConnectivityManager y NetworkInfo.
+     * @return booleano que indica si hay conexion o no.
+     */
     public boolean networkHabilitada(){
         ConnectivityManager connectivityManager = (ConnectivityManager)
                 getSystemService(Context.CONNECTIVITY_SERVICE);
@@ -249,6 +259,14 @@ public class MainActivity extends Activity {
         }
     }
 
+    /**
+     * Metodo que se ejecuta al pulsar el boton ConvertirREST, obtiene los datos de los spinner que se corresponde
+     * con la moneda de origen (moneda1) y la moneda a la que se quiere convertir (moneda2), después comprueba si
+     * hay conexion a internet, en caso afirmativo ejecuta el Asyntask AsynConversionREST para llamar al servicio
+     * web de conversion de monedas mediante tecnologia REST, en caso de no haber conexion a internet,
+     * ejecuta la conversion de moneda leyendo los datos de la BD.
+     * @param v View que se corresponde con el botón que se ha pulsado
+     */
     public void convertirDivisaREST(View v){
         if(!edCantidad.getText().toString().equals("")) {
             moneda1 = spMoneda1.getSelectedItem().toString();
