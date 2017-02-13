@@ -65,16 +65,25 @@ public class AccesoBD extends SQLiteOpenHelper{
         db.execSQL(sqlInsert);//Se ejecuta la sentencia creada anteriormente
     }
 
+    /**
+     * Metodo que se encarga de obtener el valor de una conversion de dos tipos de moneda
+     * Recibe un objeto ConversionMoneda, que contiene los tipos de moneda de los cuales se quiere
+     * realizar la conversion.
+     * @param db Base de datos en la cual se consulta el valor.
+     * @param cm ConversionMoneda que contiene los dos tipos de moneda
+     * @return Devuelve el valor de cambio
+     */
     public double obtenerValor(SQLiteDatabase db, ConversionMoneda cm){
         double valor = 0;
         String[] campos = new String[] {"valor"};
+        //Se realiza la select a la base de datos
         Cursor c = db.query("divisas", campos, "moneda1 ='" + cm.getMoneda1() + "' AND moneda2 ='" + cm.getMoneda2() + "'", null, null, null, null);
 
         //Nos aseguramos de que existe al menos un registro
         if (c.moveToFirst()) {
             //Recorremos el cursor hasta que no haya más registros
             do {
-                valor = c.getDouble(0);
+                valor = c.getDouble(0); //Se obteiene el valor de cambio
             } while(c.moveToNext());
         }
         return valor;
