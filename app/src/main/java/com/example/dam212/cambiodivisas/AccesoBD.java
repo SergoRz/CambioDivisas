@@ -10,7 +10,8 @@ import android.database.sqlite.SQLiteOpenHelper;
  * Clase que se encarga de hacer los accesos a la base de datos cuando no hoy conexion a Internet.
  * Se utiliza la base de datos divisasDB.db de SQLite, en contrecto se trabaja con la tabla divisas.
  * Esta tabla contiene el valor de cambio entre las diferentes monedas.
- * Created by EmilioCB on 12/02/2017.
+ *
+ * @author EmilioCB y SergioSR
  */
 
 public class AccesoBD extends SQLiteOpenHelper{
