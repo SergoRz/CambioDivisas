@@ -37,12 +37,14 @@ import java.net.URL;
  * Clase principal de la aplicacion, se ejecuta al iniciar la aplicacion
  * Se encarga de cargar la interfaz de la pantalla, la cual esta descrita en el xml
  * "activity_main".
- * Contiene dos clases, la clase AsynConversionSOAP se encarga de acceder al servicio web
- * mediante la tecnologia SOAP, recoger el valor de cambio y aplicarlo a la cantidad introducida.
+ * Contiene dos clases:
+ * La clase AsynConversionSOAP se encarga de acceder al servicio web mediante la
+ * tecnologia SOAP, recoger el valor de cambio y aplicarlo a la cantidad introducida.
+ * La clase AsynConversionREST se encarga de acceder al servicio web mediante la
+ * tecnologia REST, recoger el valor de cambio y aplicarlo a la cantidad introducida.
  */
 @TargetApi(Build.VERSION_CODES.CUPCAKE)
 public class MainActivity extends Activity {
-
     private final String NAMESPACE = "http://www.webserviceX.NET/";
     private final String URLSOAP = "http://www.webservicex.net/CurrencyConvertor.asmx";
     private final String SOAP_ACTION = "http://www.webserviceX.NET/ConversionRate";
@@ -191,6 +193,7 @@ public class MainActivity extends Activity {
             }
         }
     }
+
     public boolean networkHabilitada(){
         ConnectivityManager connectivityManager = (ConnectivityManager)
                 getSystemService(Context.CONNECTIVITY_SERVICE);
