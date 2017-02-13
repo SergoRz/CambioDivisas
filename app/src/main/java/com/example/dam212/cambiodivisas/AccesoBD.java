@@ -65,6 +65,7 @@ public class AccesoBD extends SQLiteOpenHelper{
     }
 
     public void introducirDivisasBD(SQLiteDatabase db){
+
         ConversionMoneda cmEE = new ConversionMoneda("EUR", "EUR", 1);
         ConversionMoneda cmEU = new ConversionMoneda("EUR", "USD", 1.06);
         ConversionMoneda cmEG = new ConversionMoneda("EUR", "GBP", 0.85);

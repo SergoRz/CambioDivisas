@@ -290,22 +290,31 @@ public class MainActivity extends Activity {
     }
 
     public void convertirDivisaSOAP(View v){
+        //Si el EditText no esta vacio
         if(!edCantidad.getText().toString().equals("")){
+            //Se obtienen las monedas de los spinner
             moneda1 = spMoneda1.getSelectedItem().toString();
             moneda2 = spMoneda2.getSelectedItem().toString();
 
+            //Si hay conexion
             if(networkHabilitada()){
+                //Se ejecuta el AsynTask AsynConversionSOAP
                 conversionSOAP = new AsynConversionSOAP();
                 conversionSOAP.execute();
-            }
+            }//Si no hay conexion
             else{
+                //Se informa al usuario de que se van a obtener los datos de la BD
                 Toast.makeText(getApplicationContext(), "No hay conexion a internet, valor obtenido de la base de datos", Toast.LENGTH_LONG).show();
+                //Se crea un objeto ConversionMoneda con las 2 monedas obtenidas anteriormente
                 ConversionMoneda cm = new ConversionMoneda(moneda1, moneda2);
+                //Se obtiene el valor de la conversion de esas dos monedas
                 double valor = abd.obtenerValor(db, cm);
+                //Se calcula el resultado con la cantidad introducida y el valor de la conversion
                 double resultado = valor*Double.parseDouble(edCantidad.getText().toString());
+                //Se actualiza el TextView de la solucion
                 tvSolucion.setText(String.valueOf(resultado));
             }
-        }
+        }//Si el EditText esta vacio se notifica al usuario de lo ocurrid
         else{
             Toast.makeText(getApplicationContext(), "No se ha introducido cantidad a convertir", Toast.LENGTH_LONG).show();
         }
@@ -320,21 +329,31 @@ public class MainActivity extends Activity {
      * @param v View que se corresponde con el botón que se ha pulsado
      */
     public void convertirDivisaREST(View v){
+        //Si el EditText no esta vacio
         if(!edCantidad.getText().toString().equals("")) {
+            //Se obtienen las monedas de los spinner
             moneda1 = spMoneda1.getSelectedItem().toString();
             moneda2 = spMoneda2.getSelectedItem().toString();
 
+            //Si hay conexion
             if (networkHabilitada()) {
+                //Se ejecuta el AsynTask AsynConversionREST
                 conversionREST = new AsynConversionREST();
                 conversionREST.execute();
-            } else {
+            }//Si no hay conexion
+            else {
+                //Se informa al usuario de que se van a obtener los datos de la BD
                 Toast.makeText(getApplicationContext(), "No hay conexion a internet, valor obtenido de la base de datos", Toast.LENGTH_LONG).show();
+                //Se crea un objeto ConversionMoneda con las 2 monedas obtenidas anteriormente
                 ConversionMoneda cm = new ConversionMoneda(moneda1, moneda2);
+                //Se obtiene el valor de la conversion de esas dos monedas
                 double valor = abd.obtenerValor(db, cm);
+                //Se calcula el resultado con la cantidad introducida y el valor de la conversion
                 double resultado = valor * Double.parseDouble(edCantidad.getText().toString());
+                //Se actualiza el TextView de la solucion
                 tvSolucion.setText(String.valueOf(resultado));
             }
-        }
+        }//Si el EditText esta vacio se notifica al usuario de lo ocurrido
         else{
             Toast.makeText(getApplicationContext(), "No se ha introducido cantidad a convertir", Toast.LENGTH_LONG).show();
         }
