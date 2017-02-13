@@ -169,7 +169,7 @@ public class MainActivity extends Activity {
                 respuesta = response.toString();
 
             } catch (Exception e) {
-                e.printStackTrace();
+                Toast.makeText(getApplicationContext(), "Error al conectarse al servidor", Toast.LENGTH_LONG).show();
             }
         }
     }
@@ -188,29 +188,36 @@ public class MainActivity extends Activity {
          */
         @Override
         protected Void doInBackground(String... params) {
-            Log.i(TAG, "doInBackground");
             getConversionREST();
             return null;
         }
 
         /**
-         * Metodo que se ejecuta despues de que el AsynTask finalice
+         * Metodo que se ejecuta una vez finalizado el metodo doInBackground
+         * Se encarga de multiplicar la cantidad deseada por el valor de cambio recibido del servicio web
+         * y mostrarlo en el TextView de la solucion.
          * @param result
          */
         @Override
         protected void onPostExecute(Void result) {
-            Log.i(TAG, "onPostExecute");
             tvSolucion.setText(String.valueOf(Double.parseDouble(respuesta) * Double.parseDouble(edCantidad.getText().toString())));
         }
 
+        /**
+         * Metodo que se ejecuta antes del metodo doInBackground
+         * En este caso no realiza ninguna accion
+         */
         @Override
         protected void onPreExecute() {
-            Log.i(TAG, "onPreExecute");
         }
 
+        /**
+         * Meotodo que se ejecuta durante el doInBackground
+         * En este caso no realiza ninguna accion
+         * @param values Valores que indican el progreso
+         */
         @Override
         protected void onProgressUpdate(Void... values) {
-            Log.i(TAG, "onProgressUpdate");
         }
 
         /**
