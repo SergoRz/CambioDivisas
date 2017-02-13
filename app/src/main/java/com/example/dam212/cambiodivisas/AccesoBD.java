@@ -78,6 +78,7 @@ public class AccesoBD extends SQLiteOpenHelper{
             } while(c.moveToNext());
         }
         return valor;
+
     }
 
     public void introducirDivisasBD(SQLiteDatabase db)throws SQLiteException{
