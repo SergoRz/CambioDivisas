@@ -9,7 +9,6 @@ import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
@@ -99,8 +98,8 @@ public class MainActivity extends Activity {
      */
     private class AsynConversionSOAP extends AsyncTask<String, Void, Void> {
         /**
-         * Metodo que se ejecuta en segundo plano, se encarga de llamar al metodo getConversionSOAP, el cual se
-         * encarga de realizar la conversion.
+         * Metodo que se ejecuta en segundo plano, se encarga de llamar al metodo getConversionREST, el cual se
+         * encarga de obtener el valor para la conversion.
          * @param params Parametros que se le pueden pasar, en este caso no se pasa ninguno
          * @return Devuelve null
          */
@@ -141,8 +140,8 @@ public class MainActivity extends Activity {
 
         /**
          * Metodo que se encarga de acceder al servicio web mediante un SoapObject,
-         * a este objeto de le pasan los parametros. A continuacion se crea un contenedor, el cual contiene
-         * el SoapObject, a continuacion se crea un httpTransportSE, para acceder al servicio web e indicarle
+         * a este objeto se le pasan los parametros. A continuacion se crea un contenedor, el cual contiene
+         * el SoapObject, a continuacion se crea un HttpTransportSE, para acceder al servicio web e indicarle
          * la pagina web y los parametros. Una vez realizada la peticion, esta devuelve la respuesta y se guarda
          * en la variable respuesta.
          */
@@ -182,10 +181,10 @@ public class MainActivity extends Activity {
      */
     private class AsynConversionREST extends AsyncTask<String, Void, Void> {
         /**
-         * Método principal de la claseAsynConversionRest es un método sobreescrito de la clase
-         * AsyncTask, este método se ejecutara cuando se llame al metodo execute() de esta misma clase.
-         * @param params parametros que puede recibir el AsynTask
-         * @return devuelve null
+         * Metodo que se ejecuta en segundo plano, se encarga de llamar al metodo getConversionREST, el cual se
+         * encarga de obtener el valor para la conversion.
+         * @param params Parametros que se le pueden pasar, en este caso no se pasa ninguno
+         * @return Devuelve null
          */
         @Override
         protected Void doInBackground(String... params) {
@@ -197,7 +196,7 @@ public class MainActivity extends Activity {
          * Metodo que se ejecuta una vez finalizado el metodo doInBackground
          * Se encarga de multiplicar la cantidad deseada por el valor de cambio recibido del servicio web
          * y mostrarlo en el TextView de la solucion.
-         * @param result
+         * @param result Resultado de la operacion doInBackground
          */
         @Override
         protected void onPostExecute(Void result) {
@@ -226,7 +225,8 @@ public class MainActivity extends Activity {
          * metodo setRequestMethod, si el codigo que retorna esta conexion es 200 se notifica que ha habido un error de conexion y se
          * desconecta. En el caso de que la conexion retorne 200 significa que se ha podido establecer la conexion correctamente, en ese caso
          * se procede a leer el XML que devuelve el servicio web, para esto se utiliza las clases XmlPullParserFactory y la clase XmlPullParser,
-         * mediante el input de esta ultima clase se obtendra el dato que queremos obtener, el cambio de divisas.
+         * mediante el input de esta ultima clase se obtendra el dato que queremos obtener, el cambio de divisas, este se guardara en la variable
+         * respuesta.
          */
         public void getConversionREST() {
             try{
