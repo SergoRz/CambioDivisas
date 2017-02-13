@@ -10,7 +10,8 @@ import android.database.sqlite.SQLiteOpenHelper;
  * Clase que se encarga de hacer los accesos a la base de datos cuando no hoy conexion a Internet.
  * Se utiliza la base de datos divisasDB.db de SQLite, en contrecto se trabaja con la tabla divisas.
  * Esta tabla contiene el valor de cambio entre las diferentes monedas.
- * Created by EmilioCB on 12/02/2017.
+ *
+ * @author EmilioCB y SergioSR
  */
 
 public class AccesoBD extends SQLiteOpenHelper{
@@ -41,27 +42,26 @@ public class AccesoBD extends SQLiteOpenHelper{
     public void onCreate(SQLiteDatabase db) {
         db.execSQL(sqlCreate); //Se ejecuta el script de la construccion de la tabla
         try{
-            introducirDivisasBD(db); //Se introducen los valores de cambio en la tabla creada
-        }catch(SQLiteException e){
-            e.printStackTrace();
-        }
+            introducirDivisasBD(db);
+        }catch(SQLiteException e){}
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {}
 
     /**
-     *
-     * @param db
-     * @param cm
+     * Metodo que permite insertar un objeto ConversionMoneda en la BD
+     * @param db Bd a la que se va a insertar el dato
+     * @param cm objeto ConversionMoneda a insertar
+     * @throws SQLiteException error al intentar hacer el insert en la BD
      */
-    public void insert(SQLiteDatabase db, ConversionMoneda cm){
+    public void insert(SQLiteDatabase db, ConversionMoneda cm) throws SQLiteException{
+        //String con la sentencia insert
         String sqlInsert = "INSERT INTO divisas VALUES('"
                 + cm.getMoneda1() + "','"
                 + cm.getMoneda2() + "',"
                 + cm.getValor() +
                 ")";
-
         db.execSQL(sqlInsert);//Se ejecuta la sentencia creada anteriormente
     }
 
@@ -87,10 +87,15 @@ public class AccesoBD extends SQLiteOpenHelper{
             } while(c.moveToNext());
         }
         return valor;
-
     }
 
-    public void introducirDivisasBD(SQLiteDatabase db)throws SQLiteException{
+    /**
+     * Metodo que hace la carga inicial en la BD con los datos de las conversiones disponibles
+     * @param db BD  en la que se van a insertar los datos
+     */
+    public void introducirDivisasBD(SQLiteDatabase db) throws SQLiteException{
+
+        //Craecion de objetos ConversionMoneda
         ConversionMoneda cmEE = new ConversionMoneda("EUR", "EUR", 1);
         ConversionMoneda cmEU = new ConversionMoneda("EUR", "USD", 1.06);
         ConversionMoneda cmEG = new ConversionMoneda("EUR", "GBP", 0.85);
@@ -111,6 +116,7 @@ public class AccesoBD extends SQLiteOpenHelper{
         ConversionMoneda cmMG = new ConversionMoneda("MXN","GBP",0.039);
         ConversionMoneda cmMM = new ConversionMoneda("MXN","MXN", 1);
 
+        //Se ejecutan los insert
         insert(db, cmEE);
         insert(db, cmEU);
         insert(db, cmEG);
