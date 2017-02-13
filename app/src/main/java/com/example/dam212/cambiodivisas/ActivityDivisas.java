@@ -29,7 +29,6 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
 import java.net.URL;
 
 /**
@@ -199,7 +198,8 @@ public class ActivityDivisas extends Activity {
          */
         @Override
         protected void onPostExecute(Void result) {
-            tvSolucion.setText(String.valueOf(Double.parseDouble(respuesta) * Double.parseDouble(edCantidad.getText().toString())));
+            tvSolucion.setText(String.valueOf(Double.parseDouble(respuesta)
+                    * Double.parseDouble(edCantidad.getText().toString())));
         }
 
         /**
@@ -230,28 +230,36 @@ public class ActivityDivisas extends Activity {
         public void getConversionREST() {
             try{
                 //Se establece la direccion del servicio web incluyendo los parametros
-                URL url = new URL("http://www.webservicex.net/CurrencyConvertor.asmx/ConversionRate?FromCurrency=" + moneda1 + "&ToCurrency=" + moneda2);
-                //Se conecta a la url indicada anteriormente y se obtiene el objeto HttpURLConnection
+                URL url = new URL("http://www.webservicex.net/CurrencyConvertor.asmx/" +
+                        "ConversionRate?FromCurrency=" + moneda1 + "&ToCurrency=" + moneda2);
+                //Se conecta a la url indicada anteriormente
+                // y se obtiene el objeto HttpURLConnection
                 HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-                //Se establece la accion que se desea ejecutar, en nuestro caso GET, para obtener el  xml que devuelve el servicio web
+                //Se establece la accion que se desea ejecutar, en nuestro caso GET, para obtener
+                // el  xml que devuelve el servicio web
                 conn.setRequestMethod("GET");
                 conn.setRequestProperty("Accept", "application/json");
 
-                //Si la conexion no es correcta, se informa al usuario mediante un toast indicando el error
+                //Si la conexion no es correcta, se informa al usuario
+                // mediante un toast indicando el error
                 if (conn.getResponseCode() != 200) {
-                    Toast.makeText(getApplicationContext(), "Error : codigo de error HTTP  : " + conn.getResponseCode(), Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(), "Error : codigo de error HTTP: "
+                            + conn.getResponseCode(), Toast.LENGTH_LONG).show();
                 }//Si la conexion es correcta
                 else{
                     //Se crea el XmlPullParserFactory que nos permitira crear el XmlPullParser
                     XmlPullParserFactory xpf =  XmlPullParserFactory.newInstance();
-                    //Se indica que el que el parser que produzca este XmlPullParserFactory soporta un espacion de nombres de XML
+                    //Se indica que el que el parser que produzca este XmlPullParserFactory
+                    // soporta un espacion de nombres de XML
                     xpf.setNamespaceAware(true);
                     //Se crea el XmlPullParser partiendo del XmlPullParserFactory
                     XmlPullParser xp = xpf.newPullParser();
 
                     //Se crea un BufferedReader con el inputstream de la conexion
-                    BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream()));
-                    //Se le pasa el BufferedReader al XmlPullParser para recorrer el XML mediante los metodos de la clase XmlPullParser
+                    BufferedReader br =
+                            new BufferedReader(new InputStreamReader(conn.getInputStream()));
+                    //Se le pasa el BufferedReader al XmlPullParser para recorrer el XML
+                    // mediante los metodos de la clase XmlPullParser
                     xp.setInput(br);
                     //Se posiciona en la etiqueta double
                     xp.nextTag();
@@ -264,12 +272,9 @@ public class ActivityDivisas extends Activity {
                 //Se desconecta
                 conn.disconnect();
 
-            } catch (MalformedURLException e) {
-                Toast.makeText(getApplicationContext(), "Error al conectarse al servidor", Toast.LENGTH_LONG).show();
-            } catch (IOException e) {
-                Toast.makeText(getApplicationContext(),"Error al conectarse al servidor", Toast.LENGTH_LONG).show();
-            } catch (XmlPullParserException e) {
-                Toast.makeText(getApplicationContext(), "Error al conectarse al servidor", Toast.LENGTH_LONG).show();
+            } catch (IOException | XmlPullParserException e) {
+                Toast.makeText(getApplicationContext(), "Error al conectarse al servidor",
+                        Toast.LENGTH_LONG).show();
             }
         }
     }
